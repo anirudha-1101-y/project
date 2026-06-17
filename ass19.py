@@ -492,7 +492,7 @@ Enter your choice: 2
 Output:
 Bill Amount: 1700
 
-(Explanation: 100×5 = 500, 100×7 = 700, 50×10 = 500 → Total = 1700)
+(Explanation: 100*5 = 500, 100*7 = 700, 50*10 = 500 → Total = 1700)
 
 ---
 
@@ -535,7 +535,7 @@ Output:
 Exiting system... Thank you!     
  """                
                 
- """         
+"""         
 
 print("1 → Enter Units Consumed") 
 print("2 → Calculate Bill Amount")

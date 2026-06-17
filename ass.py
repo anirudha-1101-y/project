@@ -6,6 +6,25 @@
      *     *
     *********
 """
+"""
+n=int(input("enter no"))
+i=1
+while i<=n:
+    print()
+    j=1
+    while j<n*2:
+        if i==n or i+j==n+1 or j-i==n-1:
+            print("*",end="")
+        else:
+            print(" ",end="")
+        j=j+1
+    i=i+1
+   
+"""
+
+
+
+
 
 
 
@@ -17,30 +36,24 @@
     *       *
     *       *
     *********
+
 """
 """
-n=int(input("enter no:"))
-i=n
-while i>=1:
+n=int(input("enter no"))
+i=1
+while i<=n:
     print()
-    j=i
-    while j>=1:
-        if i==j:
-            print("*",end="")
-        elif j==1:
+    j=1
+    while j<n*2:
+        if i==1 or i==n or j==1 or j==(n*2)-1:
             print("*",end="")
         else:
             print(" ",end="")
+        j=j+1
+    i=i+1
+       
 
-   
-        j=j-1
-    i=i-1
 """
-
-
-
-
-
 """
 3) X Star Pattern
     *   *
@@ -49,6 +62,23 @@ while i>=1:
      * *
     *   *
 """
+"""
+n=int(input("enter no"))
+i=1
+while i<=n:
+    print()
+    j=1
+    while j<=5:
+        if i==j or j==n-i+1:
+            print("*",end="")
+        else:
+            print(" ",end="")
+        j=j+1
+    
+    i=i+1
+"""
+
+
 """
 4) Vertical Diamond
        *
@@ -59,6 +89,24 @@ while i>=1:
       * *
        *
 """
+"""
+n=int(input("enter no"))
+i=1
+while i<n*2:
+    print()
+    j=1
+    while j<n*2:
+        if i+j==n+1 or j-i==n-1:
+            print("*",end="")
+        elif i-j==n-1 or i+j-n==n*2-1:
+            print("*",end="")
+        else:
+            print(" ",end="")
+        j=j+1
+    i=i+1
+
+"""
+ 
 """
 5) Number-Star Palindrome
     12344321
@@ -88,20 +136,6 @@ while i>=1:
         j=j-1
     i=i-1
 """
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 """
 6) Number Triangle with Dashes
     - - - - 1
@@ -137,9 +171,14 @@ while i<=n:
     2 - - -
     4 3 - -
     6 5 4 -
-    8 7 
+    8 7 6 5
+
 
 """
+
+
+
+
 
 
 
@@ -156,6 +195,26 @@ while i<=n:
     4       5
     5 5 5 5 5
 """
+"""
+n=int(input("enter no:"))
+i=1
+while i<=n:
+    print()
+    j=1
+    while j<=n:
+        if i==1:
+            print(j,end="")
+        elif j==1:
+            print(i,end="")
+        elif j==n:
+            print(n,end="")
+        elif i==n:
+            print(n,end="")
+        else:
+            print(" ",end="")
+        j=j+1
+    i=i+1
+  """      
 """
 9) Hollow Diamond Square
     ***********
@@ -306,6 +365,27 @@ while i>=1:
 
 """
 """
+n=int(input("enter no:"))
+i=1
+while i<=n:
+    print()
+    j=1
+    while j<=n:
+        if i==j :
+            print(i,end="")
+        elif j==n-i+1:
+            print(j,end="")
+        else:
+            print(" ",end="")
+        j=j+1
+    i=i+1
+"""
+
+
+
+
+
+"""
 
 14) Spiral Number Square
      1   2   3   4
@@ -420,6 +500,21 @@ while i<=n:
         *********
 """
 """
+n=int(input("enter no:"))
+i=1
+while i<=n:
+    print()
+    j=1
+    while j<n*2:
+        if i+j==n+1 or i==n or j-i==n-1:
+            print("*",end="")
+        else:
+            print(" ",end="")
+        j=j+1
+    i=i+1
+
+"""
+"""
 22) Inverted Hollow Pyramid
     *********
      *     *
@@ -427,6 +522,27 @@ while i<=n:
        * *
         *
 """
+"""
+n=int(input("enter no:"))
+i=1
+while i<=n:
+    print()
+    j=1
+    while j<n*2:
+        if i==1 or i==j or i+j==n*2:
+            print("*",end="")
+        else:
+            print(" ",end="")
+        j=j+1
+    i=i+1
+"""
+
+
+
+
+
+
+
 """
 23) Plus Star Pattern
           *
@@ -455,6 +571,7 @@ while i<=n:
      1234321
     123454321
 """
+"""
 n=int(input("enter no:"))
 i=n
 while i>=1:
@@ -469,7 +586,7 @@ while i>=1:
         j=j+1
   
        i=i-1
- 
+ """
 
 
 
