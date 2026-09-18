@@ -1,0 +1,179 @@
+1.
+Create a table named Students with the following columns:
+
+StudentID (INT, Primary Key)
+Name (VARCHAR(50), NOT NULL)
+Age (INT, should be between 18 and 25)
+Marks (DECIMAL(5,2), should be between 0 and 100)
+Insert the following records and observe what happens:
+
+(101, 'Alice', 20, 85.5)
+(102, 'Bob', 17, 90.0) (This should fail due to Age constraint)
+(103, 'Charlie', 22, 105.0) (This should fail due to Marks constraint)
+(104, 'David', 24, 75.0)
+
+
+mysql> create table student(studentid int primary key,name varchar(50) not null,age int check (age between 18 and 25),marks decimal(5,2) check(marks between 0 and 100));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc student;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| studentid | int          | NO   | PRI | NULL    |       |
+| name      | varchar(50)  | NO   |     | NULL    |       |
+| age       | int          | YES  |     | NULL    |       |
+| marks     | decimal(5,2) | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> insert into student values(101,"alice",20,85.5);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into student values(102,"bob",17,90.0);
+ERROR 3819 (HY000): Check constraint 'student_chk_1' is violated.
+
+mysql> insert into student values(103,"charlie",22,105.0);
+ERROR 3819 (HY000): Check constraint 'student_chk_2' is violated.
+
+mysql> insert into student values(104,"david",25,75.5);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from student;
++-----------+-------+------+-------+
+| studentid | name  | age  | marks |
++-----------+-------+------+-------+
+|       101 | alice |   20 | 85.50 |
+|       104 | david |   25 | 75.50 |
++-----------+-------+------+-------+
+
+
+
+
+2.
+
+Create a table Patients with:
+
+PatientID (INT, Primary Key)tr
+PatientName (VARCHAR(50), NOT NULL)
+Age (INT, should be between 1 and 100)
+AdmissionStatus (VARCHAR(15), should be 'Admitted' or 'Discharged', DEFAULT 'Admitted')
+TreatmentCost (DECIMAL(10,2), should be at least 1000)
+Insert records and check constraints:
+
+(201, 'Michael', 25, 'Admitted', 5000)
+(202, 'Linda', 105, 'Admitted', 8000) (Should fail due to Age constraint)
+(203, 'David', 40, DEFAULT, 1200) (Should insert 'Admitted' as default)
+(204, 'Sarah', 30, 'Discharged', 700) (Should fail due to TreatmentCost constraint)
+
+
+mysql> create table patients(patientid int primary key,patientname varchar(50) not null,age int check(age between 1 and 100),admissionstatus varchar(50) default "admitted" check (admissionstatus in ("admitted","discharged")),treatmentcost decimal(10,2) check(treatmentcost>=1000));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc patients;
++-----------------+---------------+------+-----+----------+-------+
+| Field           | Type          | Null | Key | Default  | Extra |
++-----------------+---------------+------+-----+----------+-------+
+| patientid       | int           | NO   | PRI | NULL     |       |
+| patientname     | varchar(50)   | NO   |     | NULL     |       |
+| age             | int           | YES  |     | NULL     |       |
+| admissionstatus | varchar(50)   | YES  |     | admitted |       |
+| treatmentcost   | decimal(10,2) | YES  |     | NULL     |       |
++-----------------+---------------+------+-----+----------+-------+
+5 rows in set (0.01 sec)
+
+mysql> insert into patients values(201,"michael",25,"admitted",5000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into patients values(202,"livda",105,"admitted",8000);
+ERROR 3819 (HY000): Check constraint 'patients_chk_1' is violated.
+mysql> insert into patients values(203,"david",40,default,1200);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into patients values(204,"sarah",30,"discharged",700);
+ERROR 3819 (HY000): Check constraint 'patients_chk_3' is violated.
+mysql> select * from patients;
++-----------+-------------+------+-----------------+---------------+
+| patientid | patientname | age  | admissionstatus | treatmentcost |
++-----------+-------------+------+-----------------+---------------+
+|       201 | michael     |   25 | admitted        |       5000.00 |
+|       203 | david       |   40 | admitted        |       1200.00 |
++-----------+-------------+------+-----------------+---------------+
+2 rows in set (0.00 sec)
+
+
+
+3.
+Create a table GymMembers with:
+
+MemberID (INT, Primary Key)
+MemberName (VARCHAR(50), NOT NULL)
+MembershipType (VARCHAR(15), should be 'Basic', 'Premium', or 'VIP', DEFAULT 'Basic')
+MonthlyFee (DECIMAL(6,2), should be at least 500)
+Insert records and check constraints:
+
+(501, 'John', 'Premium', 1200)
+(502, 'Emma', 'Gold', 800) (Should fail due to MembershipType constraint)
+(503, 'Daniel', DEFAULT, 700) (Should insert 'Basic' as default)
+(504, 'Sophia', 'VIP', 300) (Should fail due to MonthlyFee constraint)
+
+
+mysql> create table gymmember(memberid int primary key,membername varchar(50) not null,membershiptype varchar(15) default "basic" check(membershiptype in ("basic","premium","vip")),monthlyfee decimal(6,2) check(monthlyfee>=500));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc gymmember;
++----------------+--------------+------+-----+---------+-------+
+| Field          | Type         | Null | Key | Default | Extra |
++----------------+--------------+------+-----+---------+-------+
+| memberid       | int          | NO   | PRI | NULL    |       |
+| membername     | varchar(50)  | NO   |     | NULL    |       |
+| membershiptype | varchar(15)  | YES  |     | basic   |       |
+| monthlyfee     | decimal(6,2) | YES  |     | NULL    |       |
++----------------+--------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> insert into gymember values(501,"john","premium",1200);
+ERROR 1146 (42S02): Table 'batch18.gymember' doesn't exist
+mysql> insert into gymmember values(501,"john","premium",1200);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into gymmember values(502,"enna","gold",800);
+ERROR 3819 (HY000): Check constraint 'gymmember_chk_1' is violated.
+mysql> insert into gymmember values(503,"daniel",default,800);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into gymmember values(504,"sopia","vip",300);
+ERROR 3819 (HY000): Check constraint 'gymmember_chk_2' is violated.
+mysql> select * from gymmember;
++----------+------------+----------------+------------+
+| memberid | membername | membershiptype | monthlyfee |
++----------+------------+----------------+------------+
+|      501 | john       | premium        |    1200.00 |
+|      503 | daniel     | basic          |     800.00 |
++----------+------------+----------------+------------+
+2 rows in set (0.00 sec)
+
+
+
+4.
+Create a table Events with:
+EventID (Primary Key, Auto Increment)
+EventName (VARCHAR)
+EventDate (DATE, must be in the future)
+Insert sample records. Ensure past dates are not allowed.
+Retrieve all upcoming events.
+
+
+
+
+
+
+5.
+Create a table MovieTickets with:
+TicketID (Primary Key, Auto Increment)
+CustomerName (VARCHAR)
+ShowTime (DATETIME, must be at least 2 hours after booking)
+BookingTime (DATETIME, default to current time)
+Insert sample bookings.
+Retrieve all upcoming movie shows.
+

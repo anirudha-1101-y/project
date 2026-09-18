@@ -1,0 +1,659 @@
+BANK ACCOUNT AND CUSTOMER MANAGEMENT SYSTEM
+
+A bank wants to maintain customer and account information in MySQL. You have been asked to design a bank_account table that strictly enforces the bank's data rules using NOT NULL, UNIQUE and CHECK constraints.
+
+CREATE THE BANK_ACCOUNT TABLE
+
+Create a table named bank_account with the following columns:
+
+account_id
+INT
+Account ID, Primary Key, Auto Increment
+
+customer_name
+VARCHAR(50)
+Mandatory
+
+email
+VARCHAR(100)
+Mandatory and must be unique
+
+phone
+VARCHAR(15)
+Mandatory and must be unique
+
+account_type
+VARCHAR(20)
+Mandatory
+
+age
+INT
+Mandatory, customer must be between 18 and 70
+
+balance
+DECIMAL(12,2)
+Mandatory, balance cannot be negative
+
+monthly_income
+DECIMAL(12,2)
+Mandatory, monthly income must be greater than 10000
+
+experience
+INT
+Mandatory, experience must be between 0 and 40 years
+
+branch_city
+VARCHAR(30)
+Mandatory
+
+status
+VARCHAR(20)
+Mandatory, only Active, Inactive or Frozen
+
+interest_rate
+DECIMAL(5,2)
+Mandatory, cannot be negative
+
+opening_year
+INT
+Mandatory
+
+APPLY THE CONSTRAINTS
+
+NOT NULL CONSTRAINTS
+
+The following columns cannot contain NULL:
+
+customer_name
+email
+phone
+account_type
+age
+balance
+monthly_income
+experience
+branch_city
+status
+interest_rate
+opening_year
+
+UNIQUE CONSTRAINTS
+
+The following values must be unique across customers:
+
+email
+phone
+
+Two customers cannot have the same email or phone number.
+
+CHECK CONSTRAINTS ON INDIVIDUAL COLUMNS
+
+Age must be between 18 and 70.
+Balance must be greater than or equal to 0.
+Monthly income must be greater than 10000.
+Experience must be between 0 and 40 years.
+Interest rate must be greater than or equal to 0.
+Status can only be Active, Inactive or Frozen.
+Opening year must be between 2015 and 2026.
+COMBINATION CHECK CONSTRAINTS
+
+Rule 1: Account Type and Minimum Balance
+
+The bank allows the following minimum balances:
+
+Savings → minimum balance 1000
+
+Current → minimum balance 5000
+
+Premium → minimum balance 25000
+
+Examples:
+
+Savings + 2000 is valid.
+
+Savings + 500 is invalid.
+
+Current + 7000 is valid.
+
+Current + 3000 is invalid.
+
+Premium + 30000 is valid.
+
+Premium + 15000 is invalid.
+
+Implement this using a CHECK constraint involving account_type and balance.
+
+Rule 2: Age and Account Type
+
+Customers below 21 years can only have a Savings account.
+
+Examples:
+
+Age 19 and Savings is valid.
+
+Age 19 and Current is invalid.
+
+Age 19 and Premium is invalid.
+
+Age 30 and Current is valid.
+
+Age 30 and Premium is valid.
+
+Implement this using a CHECK constraint involving age and account_type.
+
+Rule 3: Monthly Income and Account Type
+
+Customers must have an appropriate monthly income:
+
+Savings → income must be at least 15000.
+
+Current → income must be at least 30000.
+
+Premium → income must be at least 75000.
+
+Examples:
+
+Savings + 20000 is valid.
+
+Savings + 12000 is invalid.
+
+Current + 40000 is valid.
+
+Current + 20000 is invalid.
+
+Premium + 90000 is valid.
+
+Premium + 50000 is invalid.
+
+Implement this using a CHECK constraint involving account_type and monthly_income.
+
+Rule 4: Experience and Age
+
+A customer cannot have more experience than realistically possible based on their age.
+
+Experience must be less than or equal to age minus 18.
+
+Examples:
+
+Age 25 and Experience 7 is valid.
+
+Age 25 and Experience 10 is invalid.
+
+Age 40 and Experience 20 is valid.
+
+Age 40 and Experience 25 is invalid.
+
+Implement this using a CHECK constraint involving age and experience.
+
+Rule 5: Status and Balance
+
+Business rules:
+
+Active accounts must have balance greater than 0.
+
+Inactive accounts must have balance equal to 0.
+
+Frozen accounts can have a balance, but it must be at least 1000.
+
+Examples:
+
+Active + 5000 is valid.
+
+Active + 0 is invalid.
+
+Inactive + 0 is valid.
+
+Inactive + 5000 is invalid.
+
+Frozen + 3000 is valid.
+
+Frozen + 500 is invalid.
+
+Implement this using a CHECK constraint involving status and balance.
+
+Rule 6: Opening Year and Experience
+
+Assume the current year is 2026.
+
+Customer experience cannot be greater than the number of years since the account was opened.
+
+Therefore:
+
+experience must be less than or equal to 2026 - opening_year.
+
+Examples:
+
+Opening Year 2020 and Experience 6 is valid.
+
+Opening Year 2020 and Experience 10 is invalid.
+
+Opening Year 2024 and Experience 2 is valid.
+
+Opening Year 2024 and Experience 5 is invalid.
+
+INSERT VALID RECORDS
+
+Insert at least 10 valid customers satisfying all constraints simultaneously.
+
+Your records should cover:
+
+Multiple account types
+
+Multiple branch cities
+
+Different age groups
+
+Different experience levels
+
+Different income ranges
+
+Different balance amounts
+
+All three statuses
+
+Different interest rates
+
+Different opening years
+
+Make sure email and phone numbers are unique.
+
+CONSTRAINT TESTING
+
+After inserting valid records, deliberately execute at least 12 invalid INSERT statements.
+
+NOT NULL TESTING
+
+Try inserting NULL into customer_name.
+Try inserting NULL into email.
+Try inserting NULL into balance.
+
+UNIQUE TESTING
+
+Try inserting a duplicate email.
+Try inserting a duplicate phone number.
+
+INDIVIDUAL CHECK TESTING
+
+Try age = 15.
+Try age = 75.
+Try balance = -500.
+Try monthly_income = 5000.
+Try experience = -2.
+Try interest_rate = -1.
+Try status = 'Closed'.
+Try opening_year = 2027.
+
+COMBINATION CHECK TESTING
+
+Test Premium account with balance 10000.
+Test age 19 with Current account.
+Test Premium account with monthly income 40000.
+Test age 25 with experience 10.
+Test Inactive account with balance 5000.
+Test Active account with balance 0.
+Test Frozen account with balance 500.
+Test opening year 2020 with experience 10.
+
+
+mysql> create table bank_account(account_id int primary key auto_increment,customer_name varchar(50) not null,email varchar(100) not null unique,phone varchar(15) not null unique,account_type varchar(20) not null,age int check(age between 18 and 70),balance decimal(10,2) not null check(balance>=0),monthly_income decimal(10,2) not null check(monthly_income>=10000),experience int not null check(experience between 0 and 40),branch_city varchar(30) not null,status varchar(20) not null check(status in ("active","inactive","frozen")),interest_rate decimal(5,2) not null check(interest_rate>=0),opening_year int not null check(opening_year between 2015 and 2026),check((account_type="saving" and balance>=1000) or (account_type="current" and balance>=5000) or (account_type="premium" and balance>=25000)) ,check(age<21 and account_type="saving"),check((account_type="saving" and monthly_income>=15000) or (account_type="current" and monthly_income>=30000) or (account_type="premium" and monthly_income>=75000)),check(experience<=age-10),check((status="active" and balance>0) or (status="inactive" and balance>=0) or (status="frozen" and balance>=1000)),check(experience<=2026-opening_year));
+Query OK, 0 rows affected (0.12 sec)
+
+mysql> desc bank_account;
++----------------+---------------+------+-----+---------+----------------+
+| Field          | Type          | Null | Key | Default | Extra          |
++----------------+---------------+------+-----+---------+----------------+
+| account_id     | int           | NO   | PRI | NULL    | auto_increment |
+| customer_name  | varchar(50)   | NO   |     | NULL    |                |
+| email          | varchar(100)  | NO   | UNI | NULL    |                |
+| phone          | varchar(15)   | NO   | UNI | NULL    |                |
+| account_type   | varchar(20)   | NO   |     | NULL    |                |
+| age            | int           | YES  |     | NULL    |                |
+| balance        | decimal(10,2) | NO   |     | NULL    |                |
+| monthly_income | decimal(10,2) | NO   |     | NULL    |                |
+| experience     | int           | NO   |     | NULL    |                |
+| branch_city    | varchar(30)   | NO   |     | NULL    |                |
+| status         | varchar(20)   | NO   |     | NULL    |                |
+| interest_rate  | decimal(5,2)  | NO   |     | NULL    |                |
+| opening_year   | int           | NO   |     | NULL    |                |
++----------------+---------------+------+-----+---------+----------------+
+13 rows in set (0.01 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+mysql> INSERT INTO bank_account
+    -> (customer_name, email, phone, account_type, age, balance, monthly_income, experience, branch_city, status, interest_rate, opening_year)
+    -> VALUES
+    -> ('Mayank', 'mayank@gmail.com', '9000000001', 'saving', 20, 5000.00, 20000.00, 2, 'Bhopal', 'active', 4.50, 2022),
+    -> ('Aaradhya', 'aaradhya@gmail.com', '9000000002', 'saving', 19, 8000.00, 18000.00, 1, 'Indore', 'active', 4.25, 2023),
+    -> ('Deepak', 'deepak@gmail.com', '9000000003', 'saving', 20, 12000.00, 25000.00, 3, 'Delhi', 'active', 4.75, 2021),
+    -> ('Kuldeep', 'kuldeep@gmail.com', '9000000004', 'saving', 18, 3000.00, 15000.00, 0, 'Pune', 'active', 4.00, 2025),
+    -> ('Dhruv', 'dhruv@gmail.com', '9000000005', 'saving', 20, 10000.00, 22000.00, 5, 'Mumbai', 'active', 4.50, 2019),
+    -> ('Devendra', 'devendra@gmail.com', '9000000006', 'saving', 19, 6000.00, 16000.00, 2, 'Bhopal', 'active', 4.25, 2022),
+    -> ('Anirudha', 'anirudha@gmail.com', '9000000007', 'saving', 20, 15000.00, 30000.00, 4, 'Indore', 'active', 5.00, 2020),
+    -> ('Aman', 'aman@gmail.com', '9000000008', 'saving', 18, 2500.00, 15000.00, 0, 'Jaipur', 'active', 4.00, 2026),
+    -> ('Sumit', 'sumit@gmail.com', '9000000009', 'saving', 19, 9000.00, 19000.00, 3, 'Nagpur', 'active', 4.50, 2021),
+    -> ('Rudra', 'rudra@gmail.com', '9000000010', 'saving', 20, 7000.00, 21000.00, 6, 'Bhopal', 'active', 4.25, 2018);
+Query OK, 10 rows affected (0.01 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from bank_account;
++------------+---------------+--------------------+------------+--------------+------+----------+----------------+------------+-------------+--------+---------------+--------------+
+| account_id | customer_name | email              | phone      | account_type | age  | balance  | monthly_income | experience | branch_city | status | interest_rate | opening_year |
++------------+---------------+--------------------+------------+--------------+------+----------+----------------+------------+-------------+--------+---------------+--------------+
+|         21 | Mayank        | mayank@gmail.com   | 9000000001 | saving       |   20 |  5000.00 |       20000.00 |          2 | Bhopal      | active |          4.50 |         2022 |
+|         22 | Aaradhya      | aaradhya@gmail.com | 9000000002 | saving       |   19 |  8000.00 |       18000.00 |          1 | Indore      | active |          4.25 |         2023 |
+|         23 | Deepak        | deepak@gmail.com   | 9000000003 | saving       |   20 | 12000.00 |       25000.00 |          3 | Delhi       | active |          4.75 |         2021 |
+|         24 | Kuldeep       | kuldeep@gmail.com  | 9000000004 | saving       |   18 |  3000.00 |       15000.00 |          0 | Pune        | active |          4.00 |         2025 |
+|         25 | Dhruv         | dhruv@gmail.com    | 9000000005 | saving       |   20 | 10000.00 |       22000.00 |          5 | Mumbai      | active |          4.50 |         2019 |
+|         26 | Devendra      | devendra@gmail.com | 9000000006 | saving       |   19 |  6000.00 |       16000.00 |          2 | Bhopal      | active |          4.25 |         2022 |
+|         27 | Anirudha      | anirudha@gmail.com | 9000000007 | saving       |   20 | 15000.00 |       30000.00 |          4 | Indore      | active |          5.00 |         2020 |
+|         28 | Aman          | aman@gmail.com     | 9000000008 | saving       |   18 |  2500.00 |       15000.00 |          0 | Jaipur      | active |          4.00 |         2026 |
+|         29 | Sumit         | sumit@gmail.com    | 9000000009 | saving       |   19 |  9000.00 |       19000.00 |          3 | Nagpur      | active |          4.50 |         2021 |
+|         30 | Rudra         | rudra@gmail.com    | 9000000010 | saving       |   20 |  7000.00 |       21000.00 |          6 | Bhopal      | active |          4.25 |         2018 |
++------------+---------------+--------------------+------------+--------------+------+----------+----------------+------------+-------------+--------+---------------+--------------+
+10 rows in set (0.00 sec)
+
+
+
+
+
+
+BONUS SQL PRACTICE
+
+Display all customers.
+Find customers whose age is greater than 40.
+
+mysql> select * from bank_account where age>40;
+Empty set (0.00 sec)
+
+mysql> select * from bank_account where age>=40;
+Empty set (0.00 sec)
+
+
+
+
+
+Find customers from Indore.
+ysql> select * from bank_account where branch_city="indore";
++------------+---------------+--------------------+------------+--------------+------+----------+----------------+------------+-------------+--------+---------------+--------------+
+| account_id | customer_name | email              | phone      | account_type | age  | balance  | monthly_income | experience | branch_city | status | interest_rate | opening_year |
++------------+---------------+--------------------+------------+--------------+------+----------+----------------+------------+-------------+--------+---------------+--------------+
+|         22 | Aaradhya      | aaradhya@gmail.com | 9000000002 | saving       |   19 |  8000.00 |       18000.00 |          1 | Indore      | active |          4.25 |         2023 |
+|         27 | Anirudha      | anirudha@gmail.com | 9000000007 | saving       |   20 | 15000.00 |       30000.00 |          4 | Indore      | active |          5.00 |         2020 |
++------------+---------------+--------------------+------------+--------------+------+----------+----------------+------------+-------------+--------+---------------+--------------+
+
+
+
+Find customers whose name starts with 'A' using LIKE.
+
+mysql> select * from bank_account where customer_name like "a%";
++------------+---------------+--------------------+------------+--------------+------+----------+----------------+------------+-------------+--------+---------------+--------------+
+| account_id | customer_name | email              | phone      | account_type | age  | balance  | monthly_income | experience | branch_city | status | interest_rate | opening_year |
++------------+---------------+--------------------+------------+--------------+------+----------+----------------+------------+-------------+--------+---------------+--------------+
+|         22 | Aaradhya      | aaradhya@gmail.com | 9000000002 | saving       |   19 |  8000.00 |       18000.00 |          1 | Indore      | active |          4.25 |         2023 |
+|         27 | Anirudha      | anirudha@gmail.com | 9000000007 | saving       |   20 | 15000.00 |       30000.00 |          4 | Indore      | active |          5.00 |         2020 |
+|         28 | Aman          | aman@gmail.com     | 9000000008 | saving       |   18 |  2500.00 |       15000.00 |          0 | Jaipur      | active |          4.00 |         2026 |
++------------+---------------+--------------------+------------+--------------+------+----------+----------------+------------+-------------+--------+---------------+--------------+
+
+
+
+
+
+
+
+
+
+
+Find customers whose balance is greater than 50000.
+
+
+
+mysql> select customer_name from bank_account where balance>50000;
+Empty set (0.00 sec)
+
+
+
+
+
+Display accounts ordered by balance from highest to lowest.
+
+mysql> select * from bank_account order by balance desc;
++------------+---------------+--------------------+------------+--------------+------+----------+----------------+------------+-------------+--------+---------------+--------------+
+| account_id | customer_name | email              | phone      | account_type | age  | balance  | monthly_income | experience | branch_city | status | interest_rate | opening_year |
++------------+---------------+--------------------+------------+--------------+------+----------+----------------+------------+-------------+--------+---------------+--------------+
+|         27 | Anirudha      | anirudha@gmail.com | 9000000007 | saving       |   20 | 15000.00 |       30000.00 |          4 | Indore      | active |          5.00 |         2020 |
+|         23 | Deepak        | deepak@gmail.com   | 9000000003 | saving       |   20 | 12000.00 |       25000.00 |          3 | Delhi       | active |          4.75 |         2021 |
+|         25 | Dhruv         | dhruv@gmail.com    | 9000000005 | saving       |   20 | 10000.00 |       22000.00 |          5 | Mumbai      | active |          4.50 |         2019 |
+|         29 | Sumit         | sumit@gmail.com    | 9000000009 | saving       |   19 |  9000.00 |       19000.00 |          3 | Nagpur      | active |          4.50 |         2021 |
+|         22 | Aaradhya      | aaradhya@gmail.com | 9000000002 | saving       |   19 |  8000.00 |       18000.00 |          1 | Indore      | active |          4.25 |         2023 |
+|         30 | Rudra         | rudra@gmail.com    | 9000000010 | saving       |   20 |  7000.00 |       21000.00 |          6 | Bhopal      | active |          4.25 |         2018 |
+|         26 | Devendra      | devendra@gmail.com | 9000000006 | saving       |   19 |  6000.00 |       16000.00 |          2 | Bhopal      | active |          4.25 |         2022 |
+|         21 | Mayank        | mayank@gmail.com   | 9000000001 | saving       |   20 |  5000.00 |       20000.00 |          2 | Bhopal      | active |          4.50 |         2022 |
+|         24 | Kuldeep       | kuldeep@gmail.com  | 9000000004 | saving       |   18 |  3000.00 |       15000.00 |          0 | Pune        | active |          4.00 |         2025 |
+|         28 | Aman          | aman@gmail.com     | 9000000008 | saving       |   18 |  2500.00 |       15000.00 |          0 | Jaipur      | active |          4.00 |         2026 |
++------------+---------------+--------------------+------------+--------------+------+----------+----------------+--------
+
+
+
+Display the top 5 customers by balance using LIMIT.
+
+
+mysql> select * from bank_account order by balance desc limit 5;
++------------+---------------+--------------------+------------+--------------+------+----------+----------------+------------+-------------+--------+---------------+--------------+
+| account_id | customer_name | email              | phone      | account_type | age  | balance  | monthly_income | experience | branch_city | status | interest_rate | opening_year |
++------------+---------------+--------------------+------------+--------------+------+----------+----------------+------------+-------------+--------+---------------+--------------+
+|         27 | Anirudha      | anirudha@gmail.com | 9000000007 | saving       |   20 | 15000.00 |       30000.00 |          4 | Indore      | active |          5.00 |         2020 |
+|         23 | Deepak        | deepak@gmail.com   | 9000000003 | saving       |   20 | 12000.00 |       25000.00 |          3 | Delhi       | active |          4.75 |         2021 |
+|         25 | Dhruv         | dhruv@gmail.com    | 9000000005 | saving       |   20 | 10000.00 |       22000.00 |          5 | Mumbai      | active |          4.50 |         2019 |
+|         29 | Sumit         | sumit@gmail.com    | 9000000009 | saving       |   19 |  9000.00 |       19000.00 |          3 | Nagpur      | active |          4.50 |         2021 |
+|         22 | Aaradhya      | aaradhya@gmail.com | 9000000002 | saving       |   19 |  8000.00 |       18000.00 |          1 | Indore      | active |          4.25 |         2023 |
++------------+---------------+--------------------+------------+--------------+------+----------+----------------+------------+-------------+--------+---------------+--------------+
+
+
+Skip the first 5 customers and display the next 5 using LIMIT and OFFSET.
+
+mysql> select * from bank_account order by balance desc limit 5 offset 5;
++------------+---------------+--------------------+------------+--------------+------+---------+----------------+------------+-------------+--------+---------------+--------------+
+| account_id | customer_name | email              | phone      | account_type | age  | balance | monthly_income | experience | branch_city | status | interest_rate | opening_year |
++------------+---------------+--------------------+------------+--------------+------+---------+----------------+------------+-------------+--------+---------------+--------------+
+|         30 | Rudra         | rudra@gmail.com    | 9000000010 | saving       |   20 | 7000.00 |       21000.00 |          6 | Bhopal      | active |          4.25 |         2018 |
+|         26 | Devendra      | devendra@gmail.com | 9000000006 | saving       |   19 | 6000.00 |       16000.00 |          2 | Bhopal      | active |          4.25 |         2022 |
+|         21 | Mayank        | mayank@gmail.com   | 9000000001 | saving       |   20 | 5000.00 |       20000.00 |          2 | Bhopal      | active |          4.50 |         2022 |
+|         24 | Kuldeep       | kuldeep@gmail.com  | 9000000004 | saving       |   18 | 3000.00 |       15000.00 |          0 | Pune        | active |          4.00 |         2025 |
+|         28 | Aman          | aman@gmail.com     | 9000000008 | saving       |   18 | 2500.00 |       15000.00 |          0 | Jaipur      | active |          4.00 |         2026 |
++------------+---------------+--------------------+------------+--------------+------+---------+----------------+------------+-------------+--------+---------------+--------------+
+
+
+
+
+
+
+
+Count customers in each account type using GROUP BY.
+
+mysql> select account_type,count(*) as member from bank_account group by account_type;
++--------------+--------+
+| account_type | member |
++--------------+--------+
+| saving       |     10 |
++--------------+--------+
+1 row in set (0.00 sec)
+
+
+
+
+
+
+Find average balance for each account type.
+
+
+
+
+mysql> select account_type,avg(balance) as average from bank_account group by account_type;
++--------------+-------------+
+| account_type | average     |
++--------------+-------------+
+| saving       | 7750.000000 |
++--------------+-------------+
+
+
+Find account types having more than 3 customers using HAVING
+
+
+mysql> select account_type,count(*) as customer from bank_account group by account_type having customer>3;
++--------------+----------+
+| account_type | customer |
++--------------+----------+
+| saving       |       10 |
++--------------+----------+
+1 row in set (0.00 sec)
+
+Find the highest balance using MAX().
+
+mysql> select max(balance) from bank_account;
++--------------+
+| max(balance) |
++--------------+
+|     15000.00 |
++--------------+
+
+
+
+
+
+
+
+Find the lowest balance using MIN().
+mysql> select min(balance) from bank_account;
++--------------+
+| min(balance) |
++--------------+
+|      2500.00 |
++--------------+
+
+Find total balance using SUM().
+mysql> select sum(balance) from bank_account;
++--------------+
+| sum(balance) |
++--------------+
+|     77500.00 |
++--------------+
+
+
+mysql> select sum(monthly_income) from bank_account;
++---------------------+
+| sum(monthly_income) |
++---------------------+
+|           201000.00 |
+
+Find average customer age using AVG().
+
+
+
+mysql> select avg(age)  from bank_account;
++----------+
+| avg(age) |
++----------+
+|  19.3000 |
++----------+
+
+
+
+
+Display customer names using UPPER().
+
+
+mysql> select upper(customer_name) as name from bank_account;
++----------+
+| name     |
++----------+
+| MAYANK   |
+| AARADHYA |
+| DEEPAK   |
+| KULDEEP  |
+| DHRUV    |
+| DEVENDRA |
+| ANIRUDHA |
+| AMAN     |
+| SUMIT    |
+| RUDRA    |
++----------+
+
+Display the length of each customer name using CHAR_LENGTH().
+
+mysql> select upper(customer_name),char_length(customer_name) as name from bank_account;
++----------------------+------+
+| upper(customer_name) | name |
++----------------------+------+
+| MAYANK               |    6 |
+| AARADHYA             |    8 |
+| DEEPAK               |    6 |
+| KULDEEP              |    7 |
+| DHRUV                |    5 |
+| DEVENDRA             |    8 |
+| ANIRUDHA             |    8 |
+| AMAN                 |    4 |
+| SUMIT                |    5 |
+| RUDRA                |    5 |
++----------------------+------+
+10 rows in set (0.01 sec)
+
+
+
+
+
+
+Find customers with even account_id using MOD().
+
+
+mysql> select * from bank_account where mod(account_id,2)=0;
++------------+---------------+--------------------+------------+--------------+------+---------+----------------+------------+-------------+--------+---------------+--------------+
+| account_id | customer_name | email              | phone      | account_type | age  | balance | monthly_income | experience | branch_city | status | interest_rate | opening_year |
++------------+---------------+--------------------+------------+--------------+------+---------+----------------+------------+-------------+--------+---------------+--------------+
+|         22 | Aaradhya      | aaradhya@gmail.com | 9000000002 | saving       |   19 | 8000.00 |       18000.00 |          1 | Indore      | active |          4.25 |         2023 |
+|         24 | Kuldeep       | kuldeep@gmail.com  | 9000000004 | saving       |   18 | 3000.00 |       15000.00 |          0 | Pune        | active |          4.00 |         2025 |
+|         26 | Devendra      | devendra@gmail.com | 9000000006 | saving       |   19 | 6000.00 |       16000.00 |          2 | Bhopal      | active |          4.25 |         2022 |
+|         28 | Aman          | aman@gmail.com     | 9000000008 | saving       |   18 | 2500.00 |       15000.00 |          0 | Jaipur      | active |          4.00 |         2026 |
+|         30 | Rudra         | rudra@gmail.com    | 9000000010 | saving       |   20 | 7000.00 |       21000.00 |          6 | Bhopal      | active |          4.25 |         2018 |
++------------+---------------+--------------------+------------+--------------+------+---------+----------------+------------+-------------+--------+---------------+--------------+
+5 rows in set (0.00 sec)
+
+
+
+
+Find customers with odd account_id using MOD().
+
+mysql> select * from bank_account where mod(account_id,2)<>0;
++------------+---------------+--------------------+------------+--------------+------+----------+----------------+------------+-------------+--------+---------------+--------------+
+| account_id | customer_name | email              | phone      | account_type | age  | balance  | monthly_income | experience | branch_city | status | interest_rate | opening_year |
++------------+---------------+--------------------+------------+--------------+------+----------+----------------+------------+-------------+--------+---------------+--------------+
+|         21 | Mayank        | mayank@gmail.com   | 9000000001 | saving       |   20 |  5000.00 |       20000.00 |          2 | Bhopal      | active |          4.50 |         2022 |
+|         23 | Deepak        | deepak@gmail.com   | 9000000003 | saving       |   20 | 12000.00 |       25000.00 |          3 | Delhi       | active |          4.75 |         2021 |
+|         25 | Dhruv         | dhruv@gmail.com    | 9000000005 | saving       |   20 | 10000.00 |       22000.00 |          5 | Mumbai      | active |          4.50 |         2019 |
+|         27 | Anirudha      | anirudha@gmail.com | 9000000007 | saving       |   20 | 15000.00 |       30000.00 |          4 | Indore      | active |          5.00 |         2020 |
+|         29 | Sumit         | sumit@gmail.com    | 9000000009 | saving       |   19 |  9000.00 |       19000.00 |          3 | Nagpur      | active |          4.50 |         2021 |
++------------+---------------+--------------------+------------+--------------+------+----------+----------------+------------+-------------+--------+---------------+--------------+
+5 rows in set (0.00 sec)
+
+
+Find the second-highest balance using ORDER BY, LIMIT and OFFSET.
+
+mysql> select * from bank_account order by balance desc limit 1 offset 1;
++------------+---------------+------------------+------------+--------------+------+----------+----------------+------------+-------------+--------+---------------+--------------+
+| account_id | customer_name | email            | phone      | account_type | age  | balance  | monthly_income | experience | branch_city | status | interest_rate | opening_year |
++------------+---------------+------------------+------------+--------------+------+----------+----------------+------------+-------------+--------+---------------+--------------+
+|         23 | Deepak        | deepak@gmail.com | 9000000003 | saving       |   20 | 12000.00 |       25000.00 |          3 | Delhi       | active |          4.75 |         2021 |
++------------+---------------+------------------+------------+--------------+------+----------+----------------+------------+-------------+--------+---------------+--------------+
+1 row in set (0.00 sec)

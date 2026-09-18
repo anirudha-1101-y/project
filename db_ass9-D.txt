@@ -1,0 +1,201 @@
+
+QNO 4:
+A university wants to track students' exam results. If a student is deleted, their results should also be deleted.
+Tasks:
+Create a Students table:
+StudentID (PRIMARY KEY, AUTO_INCREMENT)
+StudentName (NOT NULL)
+
+mysql> create table student4(studentid int primary key auto_increment,student_name varchar(50) not null);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc student4;
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| studentid    | int         | NO   | PRI | NULL    | auto_increment |
+| student_name | varchar(50) | NO   |     | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+
+
+
+Create an Exams table:
+
+ExamID (PRIMARY KEY, AUTO_INCREMENT)
+SubjectName (NOT NULL, UNIQUE)
+
+
+
+
+mysql> create table exam4(examid int primary key auto_increment,subject_name varchar(50) not null unique);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc exam4;
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| examid       | int         | NO   | PRI | NULL    | auto_increment |
+| subject_name | varchar(50) | NO   | UNI | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+
+
+
+
+
+Create a Results table:
+
+
+ResultID (PRIMARY KEY, AUTO_INCREMENT)
+StudentID (FOREIGN key)
+ExamID (FOREIGN KEY)
+Score (NOT NULL, CHECK Score BETWEEN 0 AND 100)
+
+mysql> create table result4(resultid int primary key auto_increment,studentid int,examid int,foreign key(studentid) references student4(studentid) on delete cascade,foreign key(examid) references exam4(examid),score decimal(10,2) check (score between 0 and 100));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc result4;
++-----------+---------------+------+-----+---------+----------------+
+| Field     | Type          | Null | Key | Default | Extra          |
++-----------+---------------+------+-----+---------+----------------+
+| resultid  | int           | NO   | PRI | NULL    | auto_increment |
+| studentid | int           | YES  | MUL | NULL    |                |
+| examid    | int           | YES  | MUL | NULL    |                |
+| score     | decimal(10,2) | YES  |     | NULL    |                |
++-----------+---------------+------+-----+---------+----------------+
+
+Insert sample data (at least 3 students, 3 exams, and 5 results).
+
+mysql> insert into student4 (student_name) values("deepika"),("rashmika"),("katappa"),("devendra"),("thapaji");
+
+mysql> select * from student4;
++-----------+--------------+
+| studentid | student_name |
++-----------+--------------+
+|         1 | deepika      |
+|         2 | rashmika     |
+|         3 | katappa      |
+|         4 | devendra     |
+|         5 | thapaji      |
++-----------+--------------+
+
+
+
+mysql> insert into exam4(subject_name) values("math"),("science"),("hindi"),("english"),("physics");
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from exam4;
++--------+--------------+
+| examid | subject_name |
++--------+--------------+
+|      4 | english      |
+|      3 | hindi        |
+|      1 | math         |
+|      5 | physics      |
+|      2 | science      |
++--------+--------------+
+
+
+mysql> insert into result4(student_id,examid,score) values(^C
+mysql> INSERT INTO result4(studentid, examid, score)
+    -> VALUES
+    -> (1, 1, 85),
+    -> (1, 2, 90),
+    -> (2, 1, 78),
+    -> (3, 3, 88),
+    -> (4, 5, 95);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from result4;
++----------+-----------+--------+-------+
+| resultid | studentid | examid | score |
++----------+-----------+--------+-------+
+|        1 |         1 |      1 | 85.00 |
+|        2 |         1 |      2 | 90.00 |
+|        3 |         2 |      1 | 78.00 |
+|        4 |         3 |      3 | 88.00 |
+|        5 |         4 |      5 | 95.00 |
++----------+-----------+--------+-------+
+5 rows in set (0.00 sec)
+
+
+
+
+Delete a student and check if their results are removed automatically.
+
+mysql> delete from student4 where studentid=2;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from student4;
++-----------+--------------+
+| studentid | student_name |
++-----------+--------------+
+|         1 | deepika      |
+|         3 | katapaa      |
+|         4 | bahubali     |
+|         5 | balaldev     |
++-----------+--------------+
+
+mysql> select * from result4;
++----------+-----------+--------+-------+
+| resultid | studentid | examid | score |
++----------+-----------+--------+-------+
+|        1 |         1 |      1 | 85.00 |
+|        2 |         1 |      2 | 90.00 |
+|        4 |         3 |      3 | 88.00 |
+|        5 |         4 |      5 | 95.00 |
++----------+-----------+--------+-------+
+
+
+
+
+
+Update an exam’s subject name and observe the effect.
+
+mysql> update exam4 set subject_name="mathmatics" where examid=3;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from result4;
++----------+-----------+--------+-------+
+| resultid | studentid | examid | score |
++----------+-----------+--------+-------+
+|        1 |         1 |      1 | 85.00 |
+|        2 |         1 |      2 | 90.00 |
+|        4 |         3 |      3 | 88.00 |
+|        5 |         4 |      5 | 95.00 |
++----------+-----------+--------+-------+
+4 rows in set (0.00 sec)
+
+mysql> select * from exam4;
++--------+--------------+
+| examid | subject_name |
++--------+--------------+
+|      4 | english      |
+|      1 | math         |
+|      3 | mathmatics   |
+|      5 | physics      |
+|      2 | science      |
++--------+--------------+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

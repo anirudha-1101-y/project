@@ -1,0 +1,141 @@
+
+QNO 3:
+A library maintains a record of books and their authors. If an author is removed, their books should not be deleted, but their author information should be set to NULL.
+
+Tasks:
+Create an Authors table:
+
+AuthorID (PRIMARY KEY, AUTO_INCREMENT)
+AuthorName (NOT NULL, UNIQUE)
+Create a Books table:
+
+
+mysql> create table authors(authorid int primary key auto_increment,authorname varchar(50) not null unique);
+
+mysql> desc authors;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| authorid   | int         | NO   | PRI | NULL    | auto_increment |
+| authorname | varchar(50) | NO   | UNI | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+
+
+
+BookID (PRIMARY KEY, AUTO_INCREMENT)
+BookTitle (NOT NULL, UNIQUE)
+AuthorID (FOREIGN KEY )
+
+
+mysql> create table books(bookid int primary key auto_increment,booktitle varchar(50) not null unique,authorid int,foreign key(authorid) references authors (authorid) on delete set null);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc books;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| bookid    | int         | NO   | PRI | NULL    | auto_increment |
+| booktitle | varchar(50) | NO   | UNI | NULL    |                |
+| authorid  | int         | YES  | MUL | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+
+
+Insert sample data (at least 3 authors and 5 books).
+
+mysql> INSERT INTO authors (authorname)
+    -> VALUES
+    -> ('R. K. Sharma'),
+    -> ('A. P. Singh'),
+    -> ('Chetan Bhagat');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO books (booktitle, authorid)
+    -> VALUES
+    -> ('Database Basics', 1),
+    -> ('Python Programming', 1),
+    -> ('MySQL Guide', 2),
+    -> ('Learning SQL', 3),
+    -> ('Advanced Programming', 3);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from authors;
++----------+---------------+
+| authorid | authorname    |
++----------+---------------+
+|        2 | A. P. Singh   |
+|        3 | Chetan Bhagat |
+|        1 | R. K. Sharma  |
++----------+---------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from books;
++--------+----------------------+----------+
+| bookid | booktitle            | authorid |
++--------+----------------------+----------+
+|      1 | Database Basics      |        1 |
+|      2 | Python Programming   |        1 |
+|      3 | MySQL Guide          |        2 |
+|      4 | Learning SQL         |        3 |
+|      5 | Advanced Programming |        3 |
++--------+----------------------+----------+
+
+
+
+
+Delete an author and check if books remain, but the AuthorID is set to NULL.
+
+
+mysql> delete from authors where authorid=2;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from authors;
++----------+---------------+
+| authorid | authorname    |
++----------+---------------+
+|        3 | Chetan Bhagat |
+|        1 | R. K. Sharma  |
++----------+---------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from books;
++--------+----------------------+----------+
+| bookid | booktitle            | authorid |
++--------+----------------------+----------+
+|      1 | Database Basics      |        1 |
+|      2 | Python Programming   |        1 |
+|      3 | MySQL Guide          |     NULL |
+|      4 | Learning SQL         |        3 |
+|      5 | Advanced Programming |        3 |
++--------+----------------------+----------+
+
+
+Update the author of a book to a new author.
+
+mysql> update books set authorid=3 where bookid=2;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from authors;
++----------+---------------+
+| authorid | authorname    |
++----------+---------------+
+|        3 | Chetan Bhagat |
+|        1 | R. K. Sharma  |
++----------+---------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from books;
++--------+----------------------+----------+
+| bookid | booktitle            | authorid |
++--------+----------------------+----------+
+|      1 | Database Basics      |        1 |
+|      2 | Python Programming   |        3 |
+|      3 | MySQL Guide          |     NULL |
+|      4 | Learning SQL         |        3 |
+|      5 | Advanced Programming |        3 |
++--------+----------------------+----------+
+

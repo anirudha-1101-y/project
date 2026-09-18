@@ -1,0 +1,505 @@
+MYSQL STRING FUNCTIONS ASSIGNMENT
+Scenario
+
+A company wants to manage and analyze employee information using MySQL. The HR department needs to prepare different employee reports by formatting employee names, processing email addresses, extracting specific parts of employee information, removing unwanted spaces, and creating employee summaries.
+
+You are given the following table and employee data. Write appropriate SELECT queries to perform the required operations.
+
+Table Name: employee_string
+Column	Data Type	Constraint
+emp_id	INT	PRIMARY KEY, AUTO_INCREMENT
+emp_name	VARCHAR(50)	NOT NULL
+email	VARCHAR(100)	NOT NULL
+department	VARCHAR(30)	NOT NULL
+designation	VARCHAR(50)	NOT NULL
+city	VARCHAR(30)	NOT NULL
+phone	VARCHAR(15)	NOT NULL
+
+
+mysql> create table employee_string(emp_id int primary key auto_increment,emp_name varchar(50) not null,email varchar(100) not null,department varchar(30) not null,designation varchar(50) not null,city varchar(30) not null,phone varchar(15) not null);
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> desc employee_string;
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| emp_id      | int          | NO   | PRI | NULL    | auto_increment |
+| emp_name    | varchar(50)  | NO   |     | NULL    |                |
+| email       | varchar(100) | NO   |     | NULL    |                |
+| department  | varchar(30)  | NO   |     | NULL    |                |
+| designation | varchar(50)  | NO   |     | NULL    |                |
+| city        | varchar(30)  | NO   |     | NULL    |                |
+| phone       | varchar(15)  | NO   |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+7 rows in set (0.03 sec)
+
+
+DATA
+('  Rahul Sharma  ', 'rahul.sharma@gmail.com', 'it', 'software developer', 'Indore', '9876543210'),
+('Priya Verma', 'priya.verma@yahoo.com', 'hr', 'hr executive', 'Bhopal', '9876501234'),
+('  Amit Patel', 'amit.patel@gmail.com', 'finance', 'account executive', 'Indore', '9123456780'),
+('Neha Singh  ', 'neha.singh@company.com', 'marketing', 'marketing manager', 'Mumbai', '9988776655'),
+('Rohit Jain', 'rohit.jain@gmail.com', 'it', 'team leader', 'Pune', '9090909090'),
+('  Sneha Gupta ', 'sneha.gupta@yahoo.com', 'sales', 'sales executive', 'Delhi', '9012345678'),
+('Vikas Yadav', 'vikas.yadav@gmail.com', 'finance', 'senior accountant', 'Jaipur', '9345678901'),
+('Anjali Mehta', 'anjali.mehta@company.com', 'hr', 'hr manager', 'Indore', '9765432109'),
+('  Karan Joshi  ', 'karan.joshi@gmail.com', 'it', 'database administrator', 'Bhopal', '8899776655'),
+('Meena Kapoor', 'meena.kapoor@yahoo.com', 'sales', 'sales manager', 'Mumbai', '9001122334');
+
+
+mysql> insert into employee_string(emp_name,email,department,designation,city,phone) values('  Rahul Sharma  ', 'rahul.sharma@gmail.com', 'it', 'software developer', 'Indore', '9876543210'),
+    -> ('Priya Verma', 'priya.verma@yahoo.com', 'hr', 'hr executive', 'Bhopal', '9876501234'),
+    -> ('  Amit Patel', 'amit.patel@gmail.com', 'finance', 'account executive', 'Indore', '9123456780'),
+    -> ('Neha Singh  ', 'neha.singh@company.com', 'marketing', 'marketing manager', 'Mumbai', '9988776655'),
+    -> ('Rohit Jain', 'rohit.jain@gmail.com', 'it', 'team leader', 'Pune', '9090909090'),
+    -> ('  Sneha Gupta ', 'sneha.gupta@yahoo.com', 'sales', 'sales executive', 'Delhi', '9012345678'),
+    -> ('Vikas Yadav', 'vikas.yadav@gmail.com', 'finance', 'senior accountant', 'Jaipur', '9345678901'),
+    -> ('Anjali Mehta', 'anjali.mehta@company.com', 'hr', 'hr manager', 'Indore', '9765432109'),
+    -> ('  Karan Joshi  ', 'karan.joshi@gmail.com', 'it', 'database administrator', 'Bhopal', '8899776655'),
+    -> ('Meena Kapoor', 'meena.kapoor@yahoo.com', 'sales', 'sales manager', 'Mumbai', '9001122334');
+Query OK, 10 rows affected (0.02 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee_string;
++--------+------------------+--------------------------+------------+------------------------+--------+------------+
+| emp_id | emp_name         | email                    | department | designation            | city   | phone      |
++--------+------------------+--------------------------+------------+------------------------+--------+------------+
+|      1 |   Rahul Sharma   | rahul.sharma@gmail.com   | it         | software developer     | Indore | 9876543210 |
+|      2 | Priya Verma      | priya.verma@yahoo.com    | hr         | hr executive           | Bhopal | 9876501234 |
+|      3 |   Amit Patel     | amit.patel@gmail.com     | finance    | account executive      | Indore | 9123456780 |
+|      4 | Neha Singh       | neha.singh@company.com   | marketing  | marketing manager      | Mumbai | 9988776655 |
+|      5 | Rohit Jain       | rohit.jain@gmail.com     | it         | team leader            | Pune   | 9090909090 |
+|      6 |   Sneha Gupta    | sneha.gupta@yahoo.com    | sales      | sales executive        | Delhi  | 9012345678 |
+|      7 | Vikas Yadav      | vikas.yadav@gmail.com    | finance    | senior accountant      | Jaipur | 9345678901 |
+|      8 | Anjali Mehta     | anjali.mehta@company.com | hr         | hr manager             | Indore | 9765432109 |
+|      9 |   Karan Joshi    | karan.joshi@gmail.com    | it         | database administrator | Bhopal | 8899776655 |
+|     10 | Meena Kapoor     | meena.kapoor@yahoo.com   | sales      | sales manager          | Mumbai | 9001122334 |
++--------+------------------+--------------------------+------------+------------------------+--------+------------+
+
+
+
+QUESTIONS
+Q1.
+
+The HR department wants to display all employee names in capital letters for an official employee report.
+
+mysql> select upper(emp_name) from employee_string where department="hr";
++-----------------+
+| upper(emp_name) |
++-----------------+
+| PRIYA VERMA     |
+| ANJALI MEHTA    |
++-----------------+
+2 rows in set (0.01 sec)
+
+
+Q2.
+
+The company wants all department names to be displayed in small letters for standardization.
+
+mysql> select department,lower(department) as lower_letter from employee_string;
++------------+--------------+
+| department | lower_letter |
++------------+--------------+
+| it         | it           |
+| hr         | hr           |
+| finance    | finance      |
+| marketing  | marketing    |
+| it         | it           |
+| sales      | sales        |
+| finance    | finance      |
+| hr         | hr           |
+| it         | it           |
+| sales      | sales        |
++------------+--------------+
+10 rows in set (0.01 sec)
+
+
+
+Q3.
+
+HR wants to know the length of each employee's name.
+
+Display the employee name along with its length.
+
+mysql> select emp_name,char_length(trim(emp_name)) as name_length from employee_string;
++------------------+-------------+
+| emp_name         | name_length |
++------------------+-------------+
+|   Rahul Sharma   |          12 |
+| Priya Verma      |          11 |
+|   Amit Patel     |          10 |
+| Neha Singh       |          10 |
+| Rohit Jain       |          10 |
+|   Sneha Gupta    |          11 |
+| Vikas Yadav      |          11 |
+| Anjali Mehta     |          12 |
+|   Karan Joshi    |          11 |
+| Meena Kapoor     |          12 |
++------------------+-------------+
+10 rows in set (0.01 sec)
+
+
+
+
+
+
+
+
+
+Q4.
+
+The HR report should display employee names in the following format:
+
+Employee: Rahul Sharma
+Employee: Priya Verma
+
+Create this output for every employee.
+
+mysql> select concat("employee :", trim(emp_name)) as employee_name from employee_string;
++------------------------+
+| employee_name          |
++------------------------+
+| employee :Rahul Sharma |
+| employee :Priya Verma  |
+| employee :Amit Patel   |
+| employee :Neha Singh   |
+| employee :Rohit Jain   |
+| employee :Sneha Gupta  |
+| employee :Vikas Yadav  |
+| employee :Anjali Mehta |
+| employee :Karan Joshi  |
+| employee :Meena Kapoor |
++------------------------+
+
+
+
+
+
+Q5.
+
+HR wants to display only the first 5 characters of each employee's name.
+
+mysql> select emp_name,left(trim(emp_name),5) as short_name from employee_string;
++------------------+------------+
+| emp_name         | short_name |
++------------------+------------+
+|   Rahul Sharma   | Rahul      |
+| Priya Verma      | Priya      |
+|   Amit Patel     | Amit       |
+| Neha Singh       | Neha       |
+| Rohit Jain       | Rohit      |
+|   Sneha Gupta    | Sneha      |
+| Vikas Yadav      | Vikas      |
+| Anjali Mehta     | Anjal      |
+|   Karan Joshi    | Karan      |
+| Meena Kapoor     | Meena      |
++------------------+----------
+
+
+
+
+Q6.
+
+Some employee names contain unnecessary spaces before or after the name.
+
+Display all employee names after removing the unwanted spaces.
+
+mysql> select trim(emp_name) as clean_name from employee_string;
++--------------+
+| clean_name   |
++--------------+
+| Rahul Sharma |
+| Priya Verma  |
+| Amit Patel   |
+| Neha Singh   |
+| Rohit Jain   |
+| Sneha Gupta  |
+| Vikas Yadav  |
+| Anjali Mehta |
+| Karan Joshi  |
+| Meena Kapoor |
++--------------+
+10 rows in set (0.00 sec)
+
+
+
+
+Q7.
+
+The company wants to replace the Gmail domain with the company's domain in the displayed email addresses.
+
+For example:
+
+rahul.sharma@gmail.com
+
+should be displayed as:
+
+rahul.sharma@company.com
+
+Do not modify the original table data.
+
+mysql> select replace(email,"@gmail.com","@company.com") as change_mail from employee_string;
++--------------------------+
+| change_mail              |
++--------------------------+
+| rahul.sharma@company.com |
+| priya.verma@yahoo.com    |
+| amit.patel@company.com   |
+| neha.singh@company.com   |
+| rohit.jain@company.com   |
+| sneha.gupta@yahoo.com    |
+| vikas.yadav@company.com  |
+| anjali.mehta@company.com |
+| karan.joshi@company.com  |
+| meena.kapoor@yahoo.com   |
++--------------------------+
+10 rows in set (0.00 sec)
+
+
+
+
+
+
+Q8.
+
+HR wants to create a temporary employee code using the first 3 characters of the employee's name.
+
+Display the employee name along with the generated code.
+
+
+mysql> select emp_name,left(trim(emp_name),3) as temporary_code from employee_string;
++------------------+----------------+
+| emp_name         | temporary_code |
++------------------+----------------+
+|   Rahul Sharma   | Rah            |
+| Priya Verma      | Pri            |
+|   Amit Patel     | Ami            |
+| Neha Singh       | Neh            |
+| Rohit Jain       | Roh            |
+|   Sneha Gupta    | Sne            |
+| Vikas Yadav      | Vik            |
+| Anjali Mehta     | Anj            |
+|   Karan Joshi    | Kar            |
+| Meena Kapoor     | Mee            |
++------------------+----------------+
+10 rows in set (0.00 sec)
+
+Q9.
+
+For privacy purposes, the company wants to display only the last 4 digits of each employee's phone number.
+
+
+mysql> select right(trim(phone),4) as privacy from employee_string;
++---------+
+| privacy |
++---------+
+| 3210    |
+| 1234    |
+| 6780    |
+| 6655    |
+| 9090    |
+| 5678    |
+| 8901    |
+| 2109    |
+| 6655    |
+| 2334    |
++---------+
+10 rows in set (0.00 sec)
+
+
+
+
+
+
+Q10.
+
+The HR department wants to display the employee's location in the following format:
+
+Indore-IT
+Bhopal-HR
+Mumbai-Marketing
+
+Combine the city and department using - between them.
+
+mysql> select concat(city,"-" ,upper(department)) as detail from employee_string;
++------------------+
+| detail           |
++------------------+
+| Indore-IT        |
+| Bhopal-HR        |
+| Indore-FINANCE   |
+| Mumbai-MARKETING |
+| Pune-IT          |
+| Delhi-SALES      |
+| Jaipur-FINANCE   |
+| Indore-HR        |
+| Bhopal-IT        |
+| Mumbai-SALES     |
++------------------+
+
+
+
+
+
+
+Q11.
+
+For a testing purpose, the IT department wants to display every employee's name in reverse order.
+
+
+mysql> select trim(emp_name),reverse(trim(emp_name)) as testing_purpose from employee_string;
++----------------+-----------------+
+| trim(emp_name) | testing_purpose |
++----------------+-----------------+
+| Rahul Sharma   | amrahS luhaR    |
+| Priya Verma    | amreV ayirP     |
+| Amit Patel     | letaP timA      |
+| Neha Singh     | hgniS aheN      |
+| Rohit Jain     | niaJ tihoR      |
+| Sneha Gupta    | atpuG ahenS     |
+| Vikas Yadav    | vadaY sakiV     |
+| Anjali Mehta   | atheM ilajnA    |
+| Karan Joshi    | ihsoJ naraK     |
+| Meena Kapoor   | roopaK aneeM    |
++----------------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql> select trim(emp_name),reverse(trim(emp_name)) as testing_purpose from employee_string where department="it";
++----------------+-----------------+
+| trim(emp_name) | testing_purpose |
++----------------+-----------------+
+| Rahul Sharma   | amrahS luhaR    |
+| Rohit Jain     | niaJ tihoR      |
+| Karan Joshi    | ihsoJ naraK     |
++----------------+-----------------+
+3 rows in set (0.00 sec)
+
+
+
+
+
+Q12.
+
+The IT department wants to find the position of the @ symbol in every employee's email address.
+
+Display the email address along with the position.
+
+Combined Questions
+
+mysql> select email,instr(email,"@") as position from employee_string;
++--------------------------+----------+
+| email                    | position |
++--------------------------+----------+
+| rahul.sharma@gmail.com   |       13 |
+| priya.verma@yahoo.com    |       12 |
+| amit.patel@gmail.com     |       11 |
+| neha.singh@company.com   |       11 |
+| rohit.jain@gmail.com     |       11 |
+| sneha.gupta@yahoo.com    |       12 |
+| vikas.yadav@gmail.com    |       12 |
+| anjali.mehta@company.com |       13 |
+| karan.joshi@gmail.com    |       12 |
+| meena.kapoor@yahoo.com   |       13 |
++--------------------------+----------+
+10 rows in set (0.01 sec)
+
+
+
+
+
+
+
+
+
+Q13.
+
+HR wants to create an official employee report in the following format:
+
+RAHUL SHARMA - SOFTWARE DEVELOPER
+
+Both the employee name and designation should appear in capital letters.
+
+
+mysql> select concat(upper(emp_name),"-",upper(designation)) as detail from employee_string;
++----------------------------------------+
+| detail                                 |
++----------------------------------------+
+|   RAHUL SHARMA  -SOFTWARE DEVELOPER    |
+| PRIYA VERMA-HR EXECUTIVE               |
+|   AMIT PATEL-ACCOUNT EXECUTIVE         |
+| NEHA SINGH  -MARKETING MANAGER         |
+| ROHIT JAIN-TEAM LEADER                 |
+|   SNEHA GUPTA -SALES EXECUTIVE         |
+| VIKAS YADAV-SENIOR ACCOUNTANT          |
+| ANJALI MEHTA-HR MANAGER                |
+|   KARAN JOSHI  -DATABASE ADMINISTRATOR |
+| MEENA KAPOOR-SALES MANAGER             |
++----------------------------------------+
+10 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+Q14.
+
+Before generating the final report, HR wants to remove unwanted spaces from employee names and then display the cleaned names in capital letters.
+
+
+mysql> select emp_name,upper(trim(emp_name)) as clean_name  from employee_string;
++------------------+--------------+
+| emp_name         | clean_name   |
++------------------+--------------+
+|   Rahul Sharma   | RAHUL SHARMA |
+| Priya Verma      | PRIYA VERMA  |
+|   Amit Patel     | AMIT PATEL   |
+| Neha Singh       | NEHA SINGH   |
+| Rohit Jain       | ROHIT JAIN   |
+|   Sneha Gupta    | SNEHA GUPTA  |
+| Vikas Yadav      | VIKAS YADAV  |
+| Anjali Mehta     | ANJALI MEHTA |
+|   Karan Joshi    | KARAN JOSHI  |
+| Meena Kapoor     | MEENA KAPOOR |
++------------------+--------------+
+10 rows in set (0.00 sec)
+
+
+Q15.
+
+The company wants a final employee summary in the following format:
+
+RAHUL SHARMA | SOFTWARE DEVELOPER | INDORE | 3210
+
+The report should contain:
+
+Employee name without unwanted spaces and in capital letters
+Designation in capital letters
+City in capital letters
+Last 4 digits of phone number
+| as separator between all values
+
+
+mysql> select concat(upper(trim(emp_name))," | ",upper(designation)," | ",upper(city)," | ",right(phone,4)) as detailed from employee_string;
++------------------------------------------------------+
+| detailed                                             |
++------------------------------------------------------+
+| RAHUL SHARMA | SOFTWARE DEVELOPER | INDORE | 3210    |
+| PRIYA VERMA | HR EXECUTIVE | BHOPAL | 1234           |
+| AMIT PATEL | ACCOUNT EXECUTIVE | INDORE | 6780       |
+| NEHA SINGH | MARKETING MANAGER | MUMBAI | 6655       |
+| ROHIT JAIN | TEAM LEADER | PUNE | 9090               |
+| SNEHA GUPTA | SALES EXECUTIVE | DELHI | 5678         |
+| VIKAS YADAV | SENIOR ACCOUNTANT | JAIPUR | 8901      |
+| ANJALI MEHTA | HR MANAGER | INDORE | 2109            |
+| KARAN JOSHI | DATABASE ADMINISTRATOR | BHOPAL | 6655 |
+| MEENA KAPOOR | SALES MANAGER | MUMBAI | 2334         |
++-----------------------------------------------------+
+
+
+
+
+Condition: Do not modify the original table data. Use only SELECT queries for all questions.

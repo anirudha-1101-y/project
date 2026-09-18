@@ -1,0 +1,114 @@
+
+QNO 2:-
+
+A hospital wants to store patient records and their assigned doctors. If a doctor leaves, all related patient records should be deleted.
+
+Tasks:
+Create a Doctors table:
+
+DoctorID (PRIMARY KEY, AUTO_INCREMENT)
+DoctorName (NOT NULL)
+Specialization (NOT NULL, UNIQUE)
+
+mysql> create table docters(docterid int primary key auto_increment,doctername varchar(20) not null,specialization varchar(20) not null unique);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> desc docters;
++----------------+-------------+------+-----+---------+----------------+
+| Field          | Type        | Null | Key | Default | Extra          |
++----------------+-------------+------+-----+---------+----------------+
+| docterid       | int         | NO   | PRI | NULL    | auto_increment |
+| doctername     | varchar(20) | NO   |     | NULL    |                |
+| specialization | varchar(20) | NO   | UNI | NULL    |                |c
++----------------+-------------+------+-----+---------+----------------+
+
+
+Create a Patients table:
+
+PatientID (PRIMARY KEY, AUTO_INCREMENT)
+PatientName (NOT NULL)
+DoctorID (FOREIGN KEY)
+
+
+mysql> create table patients(patientid int primary key auto_increment,patientname varchar(50) not null,docterid int,foreign key(docterid) references docters(docterid) on delete cascade);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc patiensts;
+ERROR 1146 (42S02): Table 'batch18.patiensts' doesn't exist
+mysql> desc patients;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| patientid   | int         | NO   | PRI | NULL    | auto_increment |
+| patientname | varchar(50) | NO   |     | NULL    |                |
+| docterid    | int         | YES  | MUL | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+
+
+Insert sample data (at least 3 doctors and 5 patients).
+
+
+mysql> select * from docters;
++----------+------------+----------------+
+| docterid | doctername | specialization |
++----------+------------+----------------+
+|        1 | Dr. Sharma | Cardiology     |
+|        2 | Dr. Verma  | Neurology      |
+|        3 | Dr. Khan   | Pediatrics     |
++----------+------------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from patients;
++-----------+-------------+----------+
+| patientid | patientname | docterid |
++-----------+-------------+----------+
+|         1 | Rahul       |        1 |
+|         2 | Amit        |        1 |
+|         3 | Priya       |        2 |
+|         4 | Neha        |        3 |
+|         5 | Ravi        |        2 |
++-----------+-------------+----------+
+
+
+
+Delete a doctor and check if related patients are removed automatically.
+
+
+mysql> delete from docters where docterid=3;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from docters;
++----------+------------+----------------+
+| docterid | doctername | specialization |
++----------+------------+----------------+
+|        1 | Dr. Sharma | Cardiology     |
+|        2 | Dr. Verma  | Neurology      |
++----------+------------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from patients;
++-----------+-------------+----------+
+| patientid | patientname | docterid |
++-----------+-------------+----------+
+|         1 | Rahul       |        1 |
+|         2 | Amit        |        1 |
+|         3 | Priya       |        2 |
+|         5 | Ravi        |        2 |
++-----------+-------------+----------+
+
+Update a patient’s doctor to a new doctor.
+
+mysql> update patients set docterid=2 where patientid=2;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from patients;
++-----------+-------------+----------+
+| patientid | patientname | docterid |
++-----------+-------------+----------+
+|         1 | Rahul       |        1 |
+|         2 | Amit        |        2 |
+|         3 | Priya       |        2 |
+|         5 | Ravi        |        2 |
++-----------+-------------+----------+
+

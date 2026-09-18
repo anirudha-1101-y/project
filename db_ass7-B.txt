@@ -1,0 +1,255 @@
+Create a table with these columns:
+
+Column	Data Type
+staff_id	INT, Primary Key, Auto Increment
+staff_name	VARCHAR(50)
+department	VARCHAR(30)
+city	VARCHAR(30)
+salary	DECIMAL(10,2)
+experience	INT
+age	INT
+email	VARCHAR(100), NULL allowed
+phone	VARCHAR(15), NULL allowed
+bonus	DECIMAL(10,2), NULL allowed
+status	VARCHAR(20)
+
+mysql> create table employee_if(staff_id int primary key auto_increment,staff_name varchar(50),department varchar(50),city varchar(30),salary decimal(10,2),experience int,age int,email varchar(100) null,phone varchar(15) null,bonus decimal(10,2) null,status varchar(20));
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> desc employee_if;
++------------+---------------+------+-----+---------+----------------+
+| Field      | Type          | Null | Key | Default | Extra          |
++------------+---------------+------+-----+---------+----------------+
+| staff_id   | int           | NO   | PRI | NULL    | auto_increment |
+| staff_name | varchar(50)   | YES  |     | NULL    |                |
+| department | varchar(50)   | YES  |     | NULL    |                |
+| city       | varchar(30)   | YES  |     | NULL    |                |
+| salary     | decimal(10,2) | YES  |     | NULL    |                |
+| experience | int           | YES  |     | NULL    |                |
+| age        | int           | YES  |     | NULL    |                |
+| email      | varchar(100)  | YES  |     | NULL    |                |
+| phone      | varchar(15)   | YES  |     | NULL    |                |
+| bonus      | decimal(10,2) | YES  |     | NULL    |                |
+| status     | varchar(20)   | YES  |     | NULL    |                |
++------------+---------------+------+-----+---------+----------------+
+11 rows in set (0.01 sec)
+
+Data
+
+mysql> INSERT INTO employee_if
+    -> (staff_name, department, city, salary, experience, age, email, phone, bonus, status)
+    -> VALUES
+    -> ('Rahul Sharma', 'IT', 'Indore', 85000, 6, 28, 'rahul@gmail.com', '9876543210', 5000, 'Active'),
+    -> ('Priya Verma', 'HR', 'Bhopal', 55000, 4, 27, NULL, '9876501234', 3000, 'Active'),
+    -> ('Amit Patel', 'Finance', 'Indore', 75000, 7, 32, 'amit@gmail.com', NULL, NULL, 'Active'),
+    -> ('Neha Singh', 'Marketing', 'Mumbai', 45000, 2, 25, NULL, NULL, 2000, 'Inactive'),
+    -> ('Rohit Jain', 'IT', 'Pune', 60000, 5, 30, 'rohit@gmail.com', '9090909090', 4000, 'Active'),
+    -> ('Sneha Gupta', 'HR', 'Delhi', 65000, 3, 29, 'sneha@gmail.com', NULL, 3500, 'Active'),
+    -> ('Vikas Yadav', 'Finance', 'Jaipur', 50000, 4, 31, 'vikas@gmail.com', '9345678901', NULL, 'Active'),
+    -> ('Anjali Mehta', 'Sales', 'Indore', 90000, 8, 35, NULL, NULL, 6000, 'Active');
+Query OK, 8 rows affected (0.03 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee_if;
++----------+--------------+------------+--------+----------+------------+------+-----------------+------------+---------+----------+
+| staff_id | staff_name   | department | city   | salary   | experience | age  | email           | phone      | bonus   | status   |
++----------+--------------+------------+--------+----------+------------+------+-----------------+------------+---------+----------+
+|        1 | Rahul Sharma | IT         | Indore | 85000.00 |          6 |   28 | rahul@gmail.com | 9876543210 | 5000.00 | Active   |
+|        2 | Priya Verma  | HR         | Bhopal | 55000.00 |          4 |   27 | NULL            | 9876501234 | 3000.00 | Active   |
+|        3 | Amit Patel   | Finance    | Indore | 75000.00 |          7 |   32 | amit@gmail.com  | NULL       |    NULL | Active   |
+|        4 | Neha Singh   | Marketing  | Mumbai | 45000.00 |          2 |   25 | NULL            | NULL       | 2000.00 | Inactive |
+|        5 | Rohit Jain   | IT         | Pune   | 60000.00 |          5 |   30 | rohit@gmail.com | 9090909090 | 4000.00 | Active   |
+|        6 | Sneha Gupta  | HR         | Delhi  | 65000.00 |          3 |   29 | sneha@gmail.com | NULL       | 3500.00 | Active   |
+|        7 | Vikas Yadav  | Finance    | Jaipur | 50000.00 |          4 |   31 | vikas@gmail.com | 9345678901 |    NULL | Active   |
+|        8 | Anjali Mehta | Sales      | Indore | 90000.00 |          8 |   35 | NULL            | NULL       | 6000.00 | Active   |
++----------+--------------+------------+--------+----------+------------+------+-----------------+------------+---------+----------+
+8 rows in set (0.00 sec)
+
+
+Q1. IF()
+Display staff_name, salary, and salary status. If salary is ₹60,000 or more, show 'High Salary', otherwise 'Low Salary'.
+
+mysql> select staff_name,salary,status ,if(salary>=60000,"high salary","low salary") as salary_status from employee_if;
++--------------+----------+----------+---------------+
+| staff_name   | salary   | status   | salary_status |
++--------------+----------+----------+---------------+
+| Rahul Sharma | 85000.00 | Active   | high salary   |
+| Priya Verma  | 55000.00 | Active   | low salary    |
+| Amit Patel   | 75000.00 | Active   | high salary   |
+| Neha Singh   | 45000.00 | Inactive | low salary    |
+| Rohit Jain   | 60000.00 | Active   | high salary   |
+| Sneha Gupta  | 65000.00 | Active   | high salary   |
+| Vikas Yadav  | 50000.00 | Active   | low salary    |
+| Anjali Mehta | 90000.00 | Active   | high salary   |
++--------------+----------+----------+---------------+
+8 rows in set (0.00 sec)
+
+
+
+Q2. IF()
+Display staff_name and experience status. If experience is 5 or more, show 'Experienced', otherwise 'Fresher'.
+
+mysql> select staff_name,if(experience>=5,"experience","fresher") as experience_status from employee_if;
++--------------+-------------------+
+| staff_name   | experience_status |
++--------------+-------------------+
+| Rahul Sharma | experience        |
+| Priya Verma  | fresher           |
+| Amit Patel   | experience        |
+| Neha Singh   | fresher           |
+| Rohit Jain   | experience        |
+| Sneha Gupta  | fresher           |
+| Vikas Yadav  | fresher           |
+| Anjali Mehta | experience        |
++--------------+-------------------+
+
+
+
+
+
+
+
+Q3. IFNULL()
+Display staff_name and email. If email is NULL, display 'Email Not Available'.
+
+
+
+mysql> select staff_name,ifnull(email,"email not available") as email_status from employee_if;
++--------------+---------------------+
+| staff_name   | email_status        |
++--------------+---------------------+
+| Rahul Sharma | rahul@gmail.com     |
+| Priya Verma  | email not available |
+| Amit Patel   | amit@gmail.com      |
+| Neha Singh   | email not available |
+| Rohit Jain   | rohit@gmail.com     |
+| Sneha Gupta  | sneha@gmail.com     |
+| Vikas Yadav  | vikas@gmail.com     |
+| Anjali Mehta | email not available |
++--------------+---------------------+
+8 rows in set (0.00 sec)
+
+
+
+
+Q4. COALESCE()
+Display staff_name and contact information. Give priority to phone → email → 'No Contact'.
+
+mysql> select staff_name,coalesce(phone,email,"no contact") as contact_information from employee_if;
++--------------+---------------------+
+| staff_name   | contact_information |
++--------------+---------------------+
+| Rahul Sharma | 9876543210          |
+| Priya Verma  | 9876501234          |
+| Amit Patel   | amit@gmail.com      |
+| Neha Singh   | no contact          |
+| Rohit Jain   | 9090909090          |
+| Sneha Gupta  | sneha@gmail.com     |
+| Vikas Yadav  | 9345678901          |
+| Anjali Mehta | no contact          |
+
++--------------+---------------------+
+8 rows in set (0.00 sec)
+
+
+
+
+
+Q5. NULLIF()
+Display staff_name and salary. If salary is exactly ₹50,000, return NULL; otherwise return the actual salary.
+
+
+mysql> select staff_name,salary,nullif(salary,50000) as salary_check from employee_if;
++--------------+----------+--------------+
+| staff_name   | salary   | salary_check |
++--------------+----------+--------------+
+| Rahul Sharma | 85000.00 |     85000.00 |
+| Priya Verma  | 55000.00 |     55000.00 |
+| Amit Patel   | 75000.00 |     75000.00 |
+| Neha Singh   | 45000.00 |     45000.00 |
+| Rohit Jain   | 60000.00 |     60000.00 |
+| Sneha Gupta  | 65000.00 |     65000.00 |
+| Vikas Yadav  | 50000.00 |         NULL |
+| Anjali Mehta | 90000.00 |     90000.00 |
++--------------+----------+--------------+
+8 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+
+
+Q6. CASE
+Create a salary category:
+
+salary >= 80,000 → 'High'
+salary >= 60,000 → 'Medium'
+Otherwise → 'Low'
+
+
+
+mysql> select staff_name,salary,
+    -> case
+    -> when salary>=80000 then "high"
+    -> when salary>=60000 then "medium"
+    -> else "low"
+    -> end as salary_status
+    -> from employee_if;
++--------------+----------+---------------+
+| staff_name   | salary   | salary_status |
++--------------+----------+---------------+
+| Rahul Sharma | 85000.00 | high          |
+| Priya Verma  | 55000.00 | low           |
+| Amit Patel   | 75000.00 | medium        |
+| Neha Singh   | 45000.00 | low           |
+| Rohit Jain   | 60000.00 | medium        |
+| Sneha Gupta  | 65000.00 | medium        |
+| Vikas Yadav  | 50000.00 | low           |
+| Anjali Mehta | 90000.00 | high          |
++--------------+----------+---------------+
+8 rows in set (0.00 sec)
+
+Q7. CASE + AND/OR
+Create an employee category:
+
+IT + experience >= 5 → 'IT Experienced'
+Finance + salary >= 70,000 → 'Finance High Earner'
+HR + experience >= 3 → 'HR Experienced'
+Otherwise → 'Other'
+
+mysql> select staff_name,experience,salary,
+    -> case
+    -> when department="it" and experience>=5 then "IT experinece"
+    -> when department="finance" and salary>=70000 then "finance high earner"
+    -> when department="hr" and experience>=3 then "HR experienced"
+    ->
+    -> else "other"
+    -> end as employee_category from employee_if;
++--------------+------------+----------+---------------------+
+| staff_name   | experience | salary   | employee_category   |
++--------------+------------+----------+---------------------+
+| Rahul Sharma |          6 | 85000.00 | IT experinece       |
+| Priya Verma  |          4 | 55000.00 | HR experienced      |
+| Amit Patel   |          7 | 75000.00 | finance high earner |
+| Neha Singh   |          2 | 45000.00 | other               |
+| Rohit Jain   |          5 | 60000.00 | IT experinece       |
+| Sneha Gupta  |          3 | 65000.00 | HR experienced      |
+| Vikas Yadav  |          4 | 50000.00 | other               |
+| Anjali Mehta |          8 | 90000.00 | other               |
++--------------+------------+----------+---------------------+
+8 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+

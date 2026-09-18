@@ -543,22 +543,403 @@ print(acc.accno)
 print(acc.holdername)
 print(acc.balance)
 """
-from collections import namedtuple
-student=namedtuple("student",["name",])
+#practise question from daily task
+"""
+
+1. Find Leaders in a List
+A leader is an element that is greater than all the elements to its right.
+Input
+Python
+[16, 17, 4, 3, 5, 2]
+Output
+Python
+[17, 5, 2]
+
+"""
+"""
+e=list(map(int,input("enter your element").split()))
+peak=[]
+if len(e)>1:
+
+    for i in range(len(e)):
+        x=e[i]
+        if i==0 and x>e[i+1]:
+              peak.append(x)
+        elif i!=0 and i!=len(e)-1:
+             if x>e[i+1] :
+                  peak.append(x)
+        elif i==len(e)-1 :
+             
+                  peak.append(x)
+else:
+     peak.append(e)
+print(peak)
+ 
+"""
+"""
+2. Find the Longest Consecutive Sequence
+Find the longest sequence of consecutive numbers in the list.
+Input
+Python
+[100, 4, 200, 1, 3, 2]
+Output
+Python
+[1, 2, 3, 4]
+
+"""
+
+"""
+3. Move All Zeros to the End
+Move all 0s to the end while maintaining the order of other elements.
+Input
+Python
+[0, 1, 0, 3, 12, 0, 5]
+Output
+Python
+[1, 3, 12, 5, 0, 0, 0
+"""
+"""
+e=list(map(int,input("enter your element").split()))
+z=[]
+p=[]
+for i in e:
+    if i==0:
+        z.append(i)
+    else:
+        p.append(i)
+print(p+z)
+
+"""
+"""
+4. Find All Unique Pairs with a Given Sum
+Find all unique pairs whose sum is equal to a target value.
+Input
+Python
+List = [2, 4, 3, 5, 7, 8, 9]
+Target = 7
+Output
+Python
+[(2, 5), (3, 4)]
+"""
+"""
+e=list(map(int,input("enter your element").split()))
+tar=int(input("enter target value: "))
+m=[]
+for i in range(len(e)):
+    for j in range(i+1,len(e)):
+        a=e[i]
+        b=e[j]
+        if a+b==tar:
+            m.append((a,b))
+print(m)
+
+
+"""
+
+"""
+
+5. Find the Majority Element
+A majority element appears more than n/2 times in the list. If none exists, print "No Majority Element".
+Input 1
+Python
+[2, 2, 1, 2, 3, 2, 2]
+Output 1
+Python
+2
+Input 2
+Python
+[1, 2, 3, 4]
+Output 2
+Python
+No Majority Elemen
+"""
+"""
+e=list(map(int,input("enter your element").split()))
+t=int(input("enter target: "))
+c=0
+for i in range(len(e)):
+    if e[i]==t:
+        c=c+1
+else:
+    if c>=len(e)/2:
+        print("majority element")
+    else:
+        print("no majority element")
+        """
+
+#from daily task
+"""
+1. Second Largest Without sort() or max()
+
+Write a program to find the second largest unique element in a list.
+
+Input:
+
+[12, 45, 67, 45, 89, 67]
+
+Output:
+
+67
+"""
+"""
+l=list(map(int,input("enter your element: ").split()))
+l1=sorted(l)
+print(l1[-2])
+"""
+#doubt
 
 
 
 
+"""
+2. Frequency Without count()
+
+Print the frequency of every element without using count().
+
+Input:
+
+[1, 2, 1, 3, 2, 1, 4]
+
+Output:
+
+1 -> 3
+2 -> 2
+3 -> 1
+4 -> 1
+
+"""
+"""
+l=list(map(int,input("enter your element: ").split()))
+v=[]
+for i in l:
+    if i not in v:
+        c=0
+        for j in l:
+            if i==j:
+                c=c+1
+        print(i,"-->",c)
+        v.append(i)
+
+"""
+"""
+3. Rotate List
+
+Rotate the list to the right by k positions.
+
+Input:
+
+List: [1,2,3,4,5]
+k = 2
+
+Output:
+
+[4,5,1,2,3]
+"""
+"""
+4. Missing Number
+
+A list contains numbers from 1 to n, but one number is missing.
+
+Find the missing number.
+
+Input:
+
+[1,2,3,5,6,7]
+
+Output:
+
+4
+"""
+"""
+l=list(map(int,input("enter your element: ").split()))
+for i in range(1,len(l)):
+    if i in l:
+        pass
+    else:
+        print(i)
+    
+ """
+"""
+5. Longest Consecutive Sequence
+
+Find the length of the longest consecutive sequence.
+
+Input:
+
+[100,4,200,1,3,2]
+
+Output:
+
+4
+
+Explanation:
+
+1,2,3,4
+"""
+"""
+6. Remove Duplicates While Preserving Order
+
+Do not use set().
+
+Input:
+
+[5,2,5,1,2,3,1]
+
+Output:
+
+[5,2,1,3]
+    
+
+"""
+"""
+l=list(map(int,input("enter your element: ").split()))
+v=[]
+for i in l:
+    if i not in v:
+        v.append(i)
+print(v)
+"""
+"""
+7. Leaders in a List
+
+A leader is greater than all elements to its right.
+
+Input:
+
+[16,17,4,3,5,2]
+
+Output:
+
+17 5 2
+"""
+"""
+v=[]
+e=list(map(int,input("enter evalution").split()))
+
+
+if len(e)>1:
+    for i in range(len(e)):
+        x=e[i]
+        if i==0 and x>e[1]:
+            v.append(x)
+        elif i!=0 and i!=len(e)-1:
+            if x>e[i-1] and x>e[i+1]:
+                v.append(x)
+        elif i==len(e)-1 and x>e[-2]:
+            v.append(x)
+        else:
+            pass
+print(v)
+"""
+"""
+8. Find Pair With Given Sum
+
+Print every unique pair whose sum equals the target.
+
+Input:
+
+List = [2,7,11,15,3,6,5]
+Target = 9
+
+Output:
+
+(2,7)
+(3,6)
+"""
+"""
+l=list(map(int,input("enter your element: ").split()))
+t=int(input("enter target"))
+for i in range(len(l)):
+    a=l[i]
+    for j in range(i+1,len(l)):
+        b=l[j]
+        if a+b==t:
+            print((a,b))
+    
+"""
+"""
+9. Matrix Row and Column Sum
+
+Given a 2D list, print the sum of every row and every column.
+
+Input:
+
+[
+ [1,2,3],
+ [4,5,6],
+ [7,8,9]
+]
+
+Output:
+
+Row Sum:
+6
+15
+24
+
+Column Sum:
+12
+15
+18
+
+"""
+"""
+
+r=int(input("enter no of rows"))
+c=int(input("enter no of column"))
+mat=[]
+for i in range(r):
+    row=[]
+    for j in range(c):
+        x=int(input("enter your element first: "))
+        row.append(x)
+    mat.append(row)
+print(mat)
+
+
+for i in range(r):
+    sum=0
+    for j in range(c):
+        sum=sum+mat[i][j]
+    print("row",i+1,sum)
+    
+print()
+for i in range(r):
+    sum=0
+    for j in range(c):
+        sum=sum+mat[j][i]
+    print("colum",i+1,sum)
+"""
 
 
 
+"""
+10. Maximum Difference
 
+Find the maximum difference arr[j] - arr[i] where j > i.
 
+Input:
 
+[7,1,5,3,6,4]
 
+Output:
 
+5
 
+Explanation:
 
-
-
-
+6 - 1 = 5
+"""
+#solution
+"""
+l=list(map(int,input("enter your element: ").split()))
+max=0
+for i in range(len(l)):
+    a=l[i]
+    for j in range(i+1,len(l)):
+        b=l[j]
+        if b-a>max:
+            max=b-a
+print(max)
+        
+"""

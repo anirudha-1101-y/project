@@ -1,0 +1,445 @@
+Assignment 1:
+ Understanding INNER JOIN
+Problem Statement:
+Consider the following tables:
+Employees
+emp_id emp_name dept_id
+1 Alice 101
+2 Bob 102
+3 Charlie 103
+4 David 101
+Departments
+dept_id  dept_name
+101      HR
+102     IT
+104     Finance
+
+
+mysql> use batch18;
+Database changed
+mysql> create table department100(dept_id int primary key,dept_name varchar(20));
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> desc department100;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| dept_id   | int         | NO   | PRI | NULL    |       |
+| dept_name | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+2 rows in set (0.03 sec)
+
+mysql> create table employee100(emp_id int primary key,emp_name varchar(20),dept_id int,foreign key(dept_id) references department100(dept_id));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc employee100;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| emp_id   | int         | NO   | PRI | NULL    |       |
+| emp_name | varchar(20) | YES  |     | NULL    |       |
+| dept_id  | int         | YES  | MUL | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+
+mysql> insert into department100 values(101,"hr"),(102,"it"),(103,"finance");
+Query OK, 3 rows affected (0.02 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> insert into employee100 values(1,"alice",101),(2,"bob",102),(3,"charlie",103),(4,"david",101);
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from department100;
++---------+-----------+
+| dept_id | dept_name |
++---------+-----------+
+|     101 | hr        |
+|     102 | it        |
+|     103 | finance   |
++---------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from employee100;
++--------+----------+---------+
+| emp_id | emp_name | dept_id |
++--------+----------+---------+
+|      1 | alice    |     101 |
+|      2 | bob      |     102 |
+|      3 | charlie  |     103 |
+|      4 | david    |     101 |
++--------+----------+---------+
+
+
+Tasks:
+
+Write a query to display employees and their corresponding department names using INNER JOIN.
+
+mysql> select e.emp_name,d.dept_name from employee100 as e inner join department100 as d on d.dept_id=e.dept_id;
++----------+-----------+
+| emp_name | dept_name |
++----------+-----------+
+| alice    | hr        |
+| david    | hr        |
+| bob      | it        |
+| charlie  | finance   |
++----------+-----------+
+
+Modify the query to display only employees who belong to the "HR" department.
+
+mysql> select e.emp_name,d.dept_name from employee100 as e inner join department100 as d on d.dept_id=e.dept_id where dept_name="hr";
++----------+-----------+
+| emp_name | dept_name |
++----------+-----------+
+| alice    | hr        |
+| david    | hr        |
++----------+-----------+
+
+Assignment 2: LEFT JOIN Practice
+
+Using the same Employees and Departments tables, answer the following:
+Tasks:
+
+==> apart from this i insert one more employee for this query --
+
+mysql> insert into employee100(emp_id,emp_name) values(5,"barlin");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from employee100;
++--------+----------+---------+
+| emp_id | emp_name | dept_id |
++--------+----------+---------+
+|      1 | alice    |     101 |
+|      2 | bob      |     102 |
+|      3 | charlie  |     103 |
+|      4 | david    |     101 |
+|      5 | barlin   |    NULL |
++--------+----------+---------+
+
+Write a query using LEFT JOIN to display all employees and their department names, including employees with no department.
+
+mysql> select e.emp_name,d.dept_name from employee100 as e left join department100 as d on d.dept_id=e.dept_id;
++----------+-----------+
+| emp_name | dept_name |
++----------+-----------+
+| alice    | hr        |
+| bob      | it        |
+| charlie  | finance   |
+| david    | hr        |
+| barlin   | NULL      |
++----------+-----------+
+
+
+Modify the query to count how many employees are without a department.
+
+mysql> select count(*) from employee100 where dept_id is null;
++----------+
+| count(*) |
++----------+
+|        1 |
++----------+
+
+Assignment 3: RIGHT JOIN Practice
+Problem Statement:
+Consider the same tables.
+Tasks:
+
+
+==> apart from this i insert one more data in department100 for this query 
+
+
+mysql> insert into department100 values(104,"sales");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from department100;
++---------+-----------+
+| dept_id | dept_name |
++---------+-----------+
+|     101 | hr        |
+|     102 | it        |
+|     103 | finance   |
+|     104 | sales     |
++---------+-----------+
+
+Write a query using RIGHT JOIN to display all departments and their employees, including departments with no employees.
+
+mysql> select  e.emp_name,d.dept_name from employee100 as e right join department100 as d on e.dept_id=d.dept_id;
++----------+-----------+
+| emp_name | dept_name |
++----------+-----------+
+| alice    | hr        |
+| david    | hr        |
+| bob      | it        |
+| charlie  | finance   |
+| NULL     | sales     |
++----------+-----------+
+
+Find the names of departments that have no employees assigned.mysql> select  
+
+e.emp_name,d.dept_name from employee100 as e right join department100 as d on e.dept_id=d.dept_id where e.emp_name is null;
++----------+-----------+
+| emp_name | dept_name |
++----------+-----------+
+| NULL     | sales     |
++----------+-----------+
+
+
+
+Assignment 4: FULL OUTER JOIN Simulation
+Problem Statement:
+Since MySQL does not support FULL OUTER JOIN directly, use a combination of LEFT JOIN and RIGHT JOIN to display all employees and departments, ensuring that unmatched records are also included.
+
+
+mysql> select e.emp_name,d.dept_name from employee100 as e left join department100 as d on e.dept_id=d.dept_id union select e.emp_name,d.dept_name from employee100 as e right join department100 as d on e.dept_id=d.dept_id;
++----------+-----------+
+| emp_name | dept_name |
++----------+-----------+
+| alice    | hr        |
+| bob      | it        |
+| charlie  | finance   |
+| david    | hr        |
+| barlin   | NULL      |
+| NULL     | sales     |
++----------+-----------+
+
+==============================================
+
+Assignment 4:
+ Customer and Orders
+Problem Statement:
+A retail store wants to generate a report displaying all customers and their latest order details. The report should include customers who have not placed any orders.
+
+Tables:
+Customer (cust_id, cust_name)
+Orders (order_id, cust_id, order_date, total_amount)
+
+mysql> create table customer100(cust_id int primary key,cust_name varchar(50));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> desc customer100;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| cust_id   | int         | NO   | PRI | NULL    |       |
+| cust_name | varchar(50) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+2 rows in set (0.01 sec)
+mysql> create table order100(order_id int primary key,cust_id int ,order_date date,order_amount int,foreign key(cust_id) references customer100(cust_id));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc order100;
++--------------+------+------+-----+---------+-------+
+| Field        | Type | Null | Key | Default | Extra |
++--------------+------+------+-----+---------+-------+
+| order_id     | int  | NO   | PRI | NULL    |       |
+| cust_id      | int  | YES  | MUL | NULL    |       |
+| order_date   | date | YES  |     | NULL    |       |
+| order_amount | int  | YES  |     | NULL    |       |
++--------------+------+------+-----+---------+-------+
+
+mysql> insert into customer100 values
+    -> (1,"alice"),
+    -> (2,"bob"),
+    -> (3,"charlie"),
+    -> (4,"david");
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> insert into order100 values
+    -> (101,1,"2026-09-10",500),
+    -> (102,1,"2026-09-12",800),
+    -> (103,2,"2026-09-11",1200),
+    -> (104,3,"2026-09-13",700);
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from customer100;
++---------+-----------+
+| cust_id | cust_name |
++---------+-----------+
+|       1 | alice     |
+|       2 | bob       |
+|       3 | charlie   |
+|       4 | david     |
++---------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> select * from order100;
++----------+---------+------------+--------------+
+| order_id | cust_id | order_date | order_amount |
++----------+---------+------------+--------------+
+|      101 |       1 | 2026-09-10 |          500 |
+|      102 |       1 | 2026-09-12 |          800 |
+|      103 |       2 | 2026-09-11 |         1200 |
+|      104 |       3 | 2026-09-13 |          700 |
++----------+---------+------------+--------------+
+
+Query 1:
+Write an SQL query using LEFT JOIN to display all customers with their order details, ensuring that customers with no orders are still included in the result.
+
+
+mysql> select c.cust_name,o.order_id from customer100 as c left join order100 as o on c.cust_id=o.cust_id;
++-----------+----------+
+| cust_name | order_id |
++-----------+----------+
+| alice     |      101 |
+| alice     |      102 |
+| bob       |      103 |
+| charlie   |      104 |
+| david     |     NULL |
++-----------+----------+
+
+mysql> select c.cust_name,o.order_id,o.order_date,o.order_amount from customer100 as c left join order100 as o on c.cust_id=o.cust_id;
++-----------+----------+------------+--------------+
+| cust_name | order_id | order_date | order_amount |
++-----------+----------+------------+--------------+
+| alice     |      101 | 2026-09-10 |          500 |
+| alice     |      102 | 2026-09-12 |          800 |
+| bob       |      103 | 2026-09-11 |         1200 |
+| charlie   |      104 | 2026-09-13 |          700 |
+| david     |     NULL | NULL       |         NULL |
++-----------+----------+------------+--------------+
+
+
+
+Query 2:
+Problem Statement:
+The store wants to generate a report including all orders placed, even if the customer record is missing (i.e., orphan orders due to data inconsistency).
+
+mysql> select c.cust_name,o.order_id,o.order_date,o.order_amount from customer100 as c right join order100 as o on c.cust_id=o.cust_id;
++-----------+----------+------------+--------------+
+| cust_name | order_id | order_date | order_amount |
++-----------+----------+------------+--------------+
+| alice     |      101 | 2026-09-10 |          500 |
+| alice     |      102 | 2026-09-12 |          800 |
+| bob       |      103 | 2026-09-11 |         1200 |
+| charlie   |      104 | 2026-09-13 |          700 |
++-----------+----------+------------+--------------+
+
+
+
+
+
+
+
+
+
+Query 3:
+The store wants a comprehensive report showing all customers and all orders, even if some customers have no orders and some orders have missing customer details.
+
+mysql> select c.cust_name,o.order_id,o.order_date,o.order_amount from customer100 as c left join order100 as o on c.cust_id=o.cust_id union select c.cust_name,o.order_id,o.order_date,o.order_amount from customer100 as c right join order100 as o on c.cust_id=o.cust_id;
++-----------+----------+------------+--------------+
+| cust_name | order_id | order_date | order_amount |
++-----------+----------+------------+--------------+
+| alice     |      102 | 2026-09-12 |          800 |
+| alice     |      101 | 2026-09-10 |          500 |
+| bob       |      103 | 2026-09-11 |         1200 |
+| charlie   |      104 | 2026-09-13 |          700 |
+| david     |     NULL | NULL       |         NULL |
++-----------+----------+------------+--------------+
+
+
+
+
+
+
+
+Query 4:
+Problem Statement:
+The store wants to analyze all possible customer-order pairings, regardless of actual transactions.
+
+
+mysql> select c.cust_name,o.order_id from customer100 as c cross join order100 as o;
++-----------+----------+
+| cust_name | order_id |
++-----------+----------+
+| david     |      101 |
+| charlie   |      101 |
+| bob       |      101 |
+| alice     |      101 |
+| david     |      102 |
+| charlie   |      102 |
+| bob       |      102 |
+| alice     |      102 |
+| david     |      103 |
+| charlie   |      103 |
+| bob       |      103 |
+| alice     |      103 |
+| david     |      104 |
+| charlie   |      104 |
+| bob       |      104 |
+| alice     |      104 |
++-----------+----------
+
+===============================================================
+===============================================================
+
+@#@ PDBC - (PYTHON DATABASE CONNECTIVITY)-->
+Python database connectivity is mechanism that enable python application to communicate with relational databases using standarise api 
+--> python follow a standard called PYTHON DB-API2.0 .
+--> This ensure that different database module behave similarly
+--> Before DB-API every database had its own way of connecting and executing query 
+--> DB-API provides a common standard code become portable , consistent , easy to maintain
+--> It is not a library it is a set of rule 
+
+
+ADVANTAGES OF DB-API :-
+
+1. database independence 
+2. easy to switch
+3. standard coding type 
+4. secure (it support parameterize query )
+5. reduce development time
+
+PYTHON DATABASE MODULE- (drivers)
+
+1. To connect python with database we use specific libraries
+ for example-
+           
+MySQL        mysql-connector-python,pymysql
+PostgreSQL psycopg2
+SQLite sqlite3 (built-in)
+oracle cx_Oracle
+MongoDB pymongo
+ 
+
+2. A database driver or module is a python library that allow your program to connect to a database , execute sql queries and fetch result 
+
+3. This modules follow PEP249 that why their structure is similer
+
+4. PEP249-- python enhancement proposal
+
+5. this proposal tells how python database module should behave and what method they must provide 
+
+
+@## DATABASE CONNECTIVITY ARCHITECTURE-
+
+user/application program --> DB-API 2.0 Interface(PEP249) ---> database driver (mysql-connector) --> database server(MySQL/PostgreSQL)--> data storage
+
+work flow--
+
+User / Application Program
+          ↓
+    DB-API 2.0 Interface
+        (PEP 249)
+          ↓
+     Database Driver
+   (mysql-connector)
+          ↓
+     Database Server
+   (MySQL / PostgreSQL)
+          ↓
+      Data Storage
+
+
+STEPS TO CONNECT PYHTON TO DATABASE
+
+1. Import database module
+
+2. establish connection
+
+3. 
+
+
+
+
+

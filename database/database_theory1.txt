@@ -1,0 +1,252 @@
+DIFFERENCE BETWEEEN DBMS AND RDBMs:
+
+DBMS  is a general software use to manage Database,but RDBMS is a adavanced type of DBMS that store data in related tables.
+Every RDBMS is a DBMS but DBMS is not an RDBMS.
+In case of DBMS data maybe stored in files, but in RDBMS data is stored in tables.
+
+
+1.SQL(:Structured Query Language)
+    It is a standard programming language used to communicate with relational Database management sysetm , it allow usesrs to create , store , retreive , update , delete and manage data stored in relational database.
+
+    It is bridge between user and the database , user send SQL commands to the DBMS, DBMS process those commands to perform the requested operations. 
+    
+    Standard :- Data is organised 
+    Query :- A request mode to the data base to perform and operation. 
+    Language ;- A standard language use to communicate with the RDBMS.
+    -> Domain Specific language <-
+    
+    
+    ##Features :
+    1. Standard language:
+    2. Easy to learn : SQL has a simple english like syntax , its support transactions. 
+    3. Provides data definition , manipulation and retrieval.
+    
+    
+2. MySQL : 
+	It is an Open Source RDBMS that uses SQL (Structured Query language) to store, manage ,retrieve and manipulate data efficiently.
+	It stores data in the  form of tables ,consisting of rows and columns and establish relationship between tables using primary keys and  foreign keys.
+	The name My :- named after My widenius  daughter of Michael widenious.
+	         SQL :- stands for Structured Query Language 
+	         
+	Why MySQL ?
+	i) Open Source -> MySQL community edition is free to download and use.
+	ii) Easy to learn.
+	iii) High performance -> It is optimised for fast data retrieval and efficient query execution.
+	iv) Cross Platform -> It runs on Windows, Linux, Mac ,UNIX etc.
+	v) Secure .
+	vi) Easy to integrate -> MySQL integrates easily with java, python, php etc.
+	vii) SQL supports.
+	viii) Multi user access.
+	ix) Large community support.
+	
+	
+#Database Objects are Tables , View ,Database , Index , Stored Procedure, Trigger , Functions. 
+
+3. Types of SQL Languages:
+   SQL consists of different categories of commands , each category is designed to perform a specific type of operations on a database such as creating database objects , manipulating data retrieving information, managing user permissions and controlling transactions.
+
+   i) DDL (Data Definition Language)
+   ii) DML (Data Manipulation Language)
+   iii) DCL (Data Control Language)
+   iv) DQl (Data Query Language)
+   v) TCL (Transaction Control Language)
+	
+
+#### SQL vs MySQL## 
+SQL - Language , MySQL - Software
+SQL can not store data by itself but MySQL store data in database and  tables.
+SQL provides commands such insert, update , delete , select.
+MySQL executes SQL commands and returns the result .
+SQL is a standard language supported by many database systems.
+MySQL is one specific database system that implement SQL.
+
+SQL does not need installation because it is a language. 
+but MySQL must be installed on a computer or server before use.
+
+#### HISTORY:
+1995 :- MySQL was developed by MYSQLAB  by Michael widenious.
+2008	:- Acciverd by SunMicroSystems.
+2010 :- Oracle corporation accired SunMicroSystems  and became the owner of MySQL.
+
+
+
+(@@hostname) HOST NAME is the unique name assigned to a computer or server on a network so that it can be identified and accessed.
+(@@port) PORT : System variable  returns the port number on which mysql server is listening for incoming client connections.
+
+Whenever any application want to connect with MySQL than we need connection details. 
+HOST : localhost
+PORT : 3306
+USERNAME : root
+PASSWORD : 1234
+DATABASE : university
+
+
+
+=================================
+1. DDL (Data Definition Language) 
+	-> Its is used to create, define, delete the structure of database structure.
+	-> They deals with structure of the objects.
+	-> They interact with database directly , they enforce an implicit commit before and after the statement.
+	-> In it we can not undo(rollback) the changes.
+	-> Auto commit before and after after DDL Command.
+	-> They are faster than other commands. 
+	Example : CREATE, ALTER, DROP, TRUNCATE, RENAME.
+	
+
+##DML - DATA  MANIPULATION LANGUAGE
+-> Deals with the data only.
+-> These commands interect with buffer first then with the database.
+-> We can undo or rollback the changes.
+-> They are slow as compare to DDL commands.
+-> They are used to manipulate the data stored inside the database tables.
+-> It does not create or modify the table structure.
+EXAMPLES :- INSERT, UPDATE ,DELETE etc.
+
+##DQL - DATA QUERY LANGUAGE
+-> It is a subset of SQL that is used to retrieve(fetch) data from one or more database tables.
+-> It allow users to view , search , filter Data.
+EXAMPLE :- SELECT 
+
+##TCL - TRANSACTION CONTROL LANGUAGE
+->It is a category of SQL and used to manage transactios in a database.
+->A TRANSACTION is sequence of one or more SQL statements that are treated as a single unit of work.
+->A set of DML OPERATIONS with commit or rollback is called TRANSACTION.
+->Every TRANSACTION will start with DML operations and commit or rollback is a ending point to these transactions.
+  This commit maybe implicit or explicit. 
+EXAMPLE:- BEGIN ,COMMIT ,ROLLBACK ,SAVEPOINT ,SETTRANSACTION 
+
+##DCL - DATA CONTROL LANGUAGE
+-> It is a subset of SQL which is used to control access to database.
+===========================
+# CREATE TABLE AS SELECT (CTAS)
+
+### 1. Definition
+**CREATE TABLE AS SELECT (CTAS)** is used to create a **new table** by copying data from an existing table or from the result of a `SELECT` query.
+It automatically creates the new table based on the columns returned by the `SELECT` statement.
+CTAS copies:
+* Selected column names
+* Column data types
+* Column order
+* Selected data
+
+### 2. Limitations of CTAS
+CTAS does not copy the complete table structure, rules, or database objects** from the original table.
+The following things are **not copied**:
+* Primary Key
+* Foreign Key
+* Auto Increment property
+* Constraints
+* Indexes
+* Triggers
+* Other database objects
+
+----------------------------------------------------------------------------------- x --------------------------------------------------------------------------------
+# INSERT COMMAND
+`INSERT` is a DML (Data Manipulation Language) command.
+It is used to **add new records (rows) into a table.
+
+## Case 1: Insert Values into All Columns
+When inserting values into **all columns**, the values must be given in the **same order as the columns in the table**.
+
+### Syntax:
+```sql
+INSERT INTO table_name
+VALUES (value1, value2, value3, ...);
+```
+### Example:
+```sql
+INSERT INTO pystudent
+VALUES (1, 'Anil', 85, 'Dewas');
+```
+------------------------------------------------
+## Case 2: Insert Values into Specific Columns :
+When we don't want to insert data into every column or we are providing all the values but order not follows , then we need to provide column list.
+
+### Syntax:
+```sql
+INSERT INTO table_name(column1, column2,column3)
+VALUES (value1, value2, value3);
+```
+### Example1:
+```sql
+INSERT INTO pystudent(id,name,city) VALUES(102,'Abhi','Indore');
+```
+### Example2:
+```sql
+INSERT INTO pystudent(id,name) VALUES(103,'Harsh');
+```
+### Best Practice:
+Always specify the column names while inserting the data, this makes the query easier to read.
+
+------------------------------------------------
+## Case 3: Insert Values into Multiple Columns :
+Instead of writing multiple insert statements we can insert many rows in one statement 
+
+### Syntax:
+```sql
+INSERT INTO table_name VALUES (value1, value2, value3, ......),(value1, value2, value3, ......);
+```
+### Example:
+```sql
+INSERT INTO pystudent VALUES(104,'Harshii',20,'Dewas'),(105,'Bhumii',30,'Indore');
+```
+
+----------------------------------------------
+## Case 4: Insert Values into Specific Columns:
+MySQL also support the set syntax
+
+### Example:
+```sql
+INSERT INTO pystudent set id=106,name='Kuldeep',age=27,city='dewas';
+```
+i) INSERT...set  can insert one row at a time
+ii) Not the part of SQL Stanadard , it means databases like ORACLE , POSTGREYSQL do not support this syntax.
+
+
+
+---------------------------------------------
+## Case 5: Insert data from another table:
+We can copy records from one table to another table.
+
+```sql
+INSERT INTO pybackup select * from pystudent;
+```
+```sql
+INSERT INTO pybackup(id,name) select id,name from pystudent;
+```
+---------------------------------------------
+
+
+####RULES TO INSERT:
+->  Values must match with column order, Wrong order can lead to errors.
+->  Number of values must match with number of columns.
+
+
+--------------------------------------------------------------------------------- x ----------------------------------------------------------------------------
+### PRIMARY KEY:
+It is column or group of columns whose values uniquely identify each row in a table.
+It does not allow duplicate values or null values.
+Without a primary key:
+                     Duplicate records can exist , it become difficult to identify a particular row
+                     Relationships between tables can not be stablised properly.
+                     Data integrity will be reduced.
+                     Searhching records become less reliable.
+CHARACTERISTICS:
+-> Unique values.
+-> Can not contain null.
+-> Only one primary key per table is allowed , however that primary can consists multiple column(its called COMPOSITE KEY).
+-> It automatically creates an Index , when a primary key is created MySQL automatically creates a unique INDEX on that column.
+-> Values of primary key should be stable.
+
+##CREATE PRIMARY KEY:
+WAY 1:
+      create table pyemployee(empid int primary key, name varchar(20),salary decimal(10,2));
+
+WAY 2:
+    create table pyemployee1(empid int , name varchar(20),salary decimal(10,2),constraint pk_employee primary key(empid));
+    
+WAY 3:
+     create table pyemployee3(empid int , name varchar(20),salary decimal(10,2));
+     alter table pyemployee3 add primary key(empid);
+
+

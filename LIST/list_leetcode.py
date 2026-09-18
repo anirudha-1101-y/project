@@ -262,7 +262,7 @@ a=input("enter value 1")
 b=input("enter value 2")
 print(bin(int(a,2)+int(b,2))[2:])
 """
-#question ==7
+#question ==8
 """
 Input: nums = [2,2,1]
 
@@ -292,210 +292,254 @@ for i in l:
         if c==1:
             print(i,end=" ")
 """
-#question==8
+#9 Intersection of Two Arrays II Easy https://leetcode.com/problems/intersection-of-two-arrays-ii
 """
-Input: nums = [1,2,3,1]
+350. Intersection of Two Arrays II
+Easy
+Topics
+premium lock icon
+Companies
+Given two integer arrays nums1 and nums2, return an array of their intersection. Each element in the result must appear as many times as it shows in both arrays and you may return the result in any order.
 
-Output: true
+ 
 
-Explanation:
+Example 1:
 
-The element 1 occurs at the indices 0 and 3.
-
+Input: nums1 = [1,2,2,1], nums2 = [2,2]
+Output: [2,2]
 Example 2:
 
-Input: nums = [1,2,3,4]
-
-Output: false
-
-Explanation
-"""
-"""
-l=list(map(int,input("enter your element: ").split()))
-f=False
-for i in range(len(l)):
-    for j in range(i+1,len(l)):
-        if l[i]==l[j]:
-            f=True
-            break
-   
-print(f)
-
-"""
-"""
-l=list(map(int,input("enter your element: ").split()))
-s=set(l)
-if len(s)==len(l):
-    print("false")
-else:
-    print("true")
-"""
-"""
-print("additon of two matrix ")
-while True:
-    print("1.sum of two matrix")
-    print("2.multiplication of two matrix")
-    print("exit")
-    ch=int(input("enter your choice: "))
-    match ch:
-        case 1:
-            rows=int(input("enter no of rows: "))
-            cols=int(input("enter no of cols"))
-            mat1=[]
-            for i in range(rows):
-                r=[]
-                for j in range(cols):
-                    x=int(input("enter element: "))
-                    r.append(x)
-                mat1.append(r)
-            print("element =2")
-            mat2=[]
-            for i in range(rows):
-                r=[]
-                for j in range(cols):
-                    x=int(input("enter element: "))
-                    r.append(x)
-                mat2.append(r)
-            mat3=[]
-            for i in range(rows):
-                r=[]
-                for j in range(cols):
-                    r.append(0)
-                mat3.append(r)
-            print(" matrix==1")
-            for i in mat1:
-                for j in i:
-                    print(j,end=" ")
-                print()
-            print("matrix ==2")
-            for i in mat2:
-                for j in i:
-                    print(j,end=" ")
-                print()
-            for i in range(rows):
-                for j in range(cols):
-                    mat3[i][j]=mat1[i][j]+mat2[i][j]
-            print("matrix==resultant")
-            for i in mat3:
-                for j in i:
-                    print(j,end=" ")
-                print()
-        case 2:
-            rows1=int(input("enter no of rows: "))
-            cols1=int(input("enter no of cols"))
-
-            mat1=[]
-            
-            for i in range(rows1):
-                r=[]
-                for j in range(cols1):
-                    x=int(input("enter element: "))
-                    r.append(x)
-                mat1.append(r)
-            
-            rows2=int(input("enter no of rows: "))
-            cols2=int(input("enter no of cols"))
-
-            mat2=[]
-            
-            for i in range(rows2):
-                r=[]
-                for j in range(cols2):
-                    x=int(input("enter element: "))
-                    r.append(x)
-                mat2.append(r)
-            if cols1==rows2:
-                mat3=[]
-                for i in range(rows1):
-                    r=[]
-                    for j in range(cols2):
-                        r.append(0)
-                    mat3.append(r)
-                for i in range(rows1):
-                    for j in range(cols2):
-                        for k in range(cols1):
-                            mat3[i][j]=mat3[i][j]+mat1[i][k]+mat2[k][j]
-                for i in mat3:
-                    for j in i:
-                        print(j,end=" ")
-                    print()
-
-"""
-"""
-2.
-
-=========================================================
-            MATRIX ANALYSIS SYSTEM
-=========================================================
-
-
-A research laboratory stores experimental data in matrix form.
-Scientists want a program that can analyze the matrix and provide
-different statistics through a menu-driven application.
-
-The application should allow the user to:
-
-1. Count Prime Numbers Row-wise
-2. Count Perfect Numbers Column-wise
-3. Display Row-wise Sum
-4. Exit
-
-     """
-"""
-rows=int(input("enter no of rows: "))
-cols=int(input("enter no of cols: "))
-mat=[]
-for i in range(rows):
-    r=[]
-    for j in range(cols):
-        x=int(input("entre element: "))
-        r.append(x) 
-    mat.append(r)          
-print(mat)            
-while True:
-    print("1. Count Prime Numbers Row-wise")
-    print("2. Count Perfect Numbers Column-wise")
-    print("3. Display Row-wise Sum")
-    print("4. Exit")
-    ch=int(input("enter your choice :"))
-
-    match ch:
-        case 1:
-            for i in range(rows):
-                c=0
-                for j in range(cols):
-                    s=mat[i][j]
-                    if s>1:
-                        for k in range(2,s//2+1):
-                          if s%k==0:
-                              break
-                        else:
-                           c=c+1
-                print("row",i+1,"count is",c)
-        case 2:
-            for i in range(len(mat[0])):
-                c=0
-
-                for j in range(len(mat)):
-                    a=mat[j][i]
-                    sum=0
-                    for k in range(1,a//2+1):
-                        if a%k==0:
-                            sum=sum+k
-                    
-                    if sum==a:
-                            c=c+1
-                print("column",i+1,"count",c)
-        case 3:
-            for i in range(len(mat)):
-                sum=0
-                for j in range(len(mat[i])):
-                    s=mat[i][j]
-                    sum=sum+s
-                print("row",i+1,"sum",sum)
-        case 4:
-            print("exit ")
-            break
-
+Input: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+Output: [4,9]
+Explanation: [9,4] is also accepted.
 """
 
+"""
+nums1=list(map(int,input("enter your element: ").split()))
+nums2=list(map(int,input("enter element: ").split()))
+n=[]
+for i in nums1:
+    if i in nums2:
+        n.append(i)
+    else:
+        pass
+print(n)
+"""
+# 10 Move Zeroes Easy https://leetcode.com/problems/move-zeroes
+"""
+283. Move Zeroes
+Easy
+Topics
+premium lock icon
+Companies
+Hint
+Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.
+
+Note that you must do this in-place without making a copy of the array.
+
+ 
+
+Example 1:
+
+Input: nums = [0,1,0,3,12]
+Output: [1,3,12,0,0]
+Example 2:
+
+Input: nums = [0]
+Output: [0]
+"""
+"""
+nums=list(map(int,input("enter element: ").split()))
+p=[]
+n=[]
+for i in nums:
+    if i==0:
+        n.append(i)
+    else:
+        p.append(i)
+p.sort()
+print(p+n)
+"""
+#11 Best Time to Buy and Sell Stock Easy https://leetcode.com/problems/best-time-to-buy-and-sell-stock
+"""
+121. Best Time to Buy and Sell Stock
+Easy
+Topics
+premium lock icon
+Companies
+You are given an array prices where prices[i] is the price of a given stock on the ith day.
+
+You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
+
+Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.
+
+ 
+
+Example 1:
+
+Input: prices = [7,1,5,3,6,4]
+Output: 5
+Explanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.
+Note that buying on day 2 and selling on day 1 is not allowed because you must buy before you sell.
+Example 2:
+
+Input: prices = [7,6,4,3,1]
+Output: 0
+Explanation: In this case, no transactions are done and the max profit = 0.
+"""
+"""
+n=list(map(int,input("enter element: ").split()))
+p=0
+for i in range(len(n)):
+    for j in range(i+1,len(n)):
+        if n[j]-n[i]>p:
+            p=n[j]-n[i]
+print(p)
+"""
+#12 Maximum Subarray Easy https://leetcode.com/problems/maximum-sub
+"""
+53. Maximum Subarray
+Medium
+Topics
+premium lock icon
+Companies
+Given an integer array nums, find the subarray with the largest sum, and return its sum.
+
+ 
+
+Example 1:
+
+Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
+Output: 6
+Explanation: The subarray [4,-1,2,1] has the largest sum 6.
+Example 2:
+
+Input: nums = [1]
+Output: 1
+Explanation: The subarray [1] has the largest sum 1.
+Example 3:
+
+Input: nums = [5,4,-1,7,8]
+Output: 23
+Explanation: The subarray [5,4,-1,7,8] has the largest sum 23.
+"""
+"""
+n=list(map(int,input("enter element: ").split()))
+sum=0
+for i in n:
+    sum=abs(sum)+i
+print("largest sum",sum)
+"""
+#13 Find All Numbers Disappeared in an Array Easy https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array/
+
+"""
+448. Find All Numbers Disappeared in an Array
+Easy
+Topics
+premium lock icon
+Companies
+Hint
+Given an array nums of n integers where nums[i] is in the range [1, n], return an array of all the integers in the range [1, n] that do not appear in nums.
+
+ 
+
+Example 1:
+
+Input: nums = [4,3,2,7,8,2,3,1]
+Output: [5,6]
+Example 2:
+
+Input: nums = [1,1]
+Output: [2]
+"""
+"""
+n=list(map(int,input("enter eleement: ").split()))
+nn=[]
+for i in range(1,len(n)+1):
+  
+        if i not in n:
+            nn.append(i)
+print(nn)
+"""
+#14 Find the Difference of Two Arrays Easy https://leetcode.com/problems/find-the-difference-of-two-arrays
+"""
+2215. Find the Difference of Two Arrays
+Easy
+Topics
+premium lock icon
+Companies
+Hint
+Given two 0-indexed integer arrays nums1 and nums2, return a list answer of size 2 where:
+
+answer[0] is a list of all distinct integers in nums1 which are not present in nums2.
+answer[1] is a list of all distinct integers in nums2 which are not present in nums1.
+Note that the integers in the lists may be returned in any order.
+
+ 
+
+Example 1:
+
+Input: nums1 = [1,2,3], nums2 = [2,4,6]
+Output: [[1,3],[4,6]]
+Explanation:
+For nums1, nums1[1] = 2 is present at index 0 of nums2, whereas nums1[0] = 1 and nums1[2] = 3 are not present in nums2. Therefore, answer[0] = [1,3].
+For nums2, nums2[0] = 2 is present at index 1 of nums1, whereas nums2[1] = 4 and nums2[2] = 6 are not present in nums1. Therefore, answer[1] = [4,6].
+Example 2:
+
+Input: nums1 = [1,2,3,3], nums2 = [1,1,2,2]
+Output: [[3],[]]
+Explanation:
+For nums1, nums1[2] and nums1[3] are not present in nums2. Since nums1[2] == nums1[3], their value is only included once and answer[0] = [3].
+Every integer in nums2 is present in nums1. Therefore, answer[1] = [].
+"""
+"""
+nums1=list(map(int,input("enter your element: ").split()))
+nums2=list(map(int,input("enter element: ").split()))
+n1=set(nums1)
+n2=set(nums2)
+print([list(n1-n2),list(n2-n1)])
+"""
+#15 Third Maximum Number Easy https://leetcode.com/problems/third-maximum-number/
+"""
+414. Third Maximum Number
+Easy
+Topics
+premium lock icon
+Companies
+Given an integer array nums, return the third distinct maximum number in this array. If the third maximum does not exist, return the maximum number.
+
+ 
+
+Example 1:
+
+Input: nums = [3,2,1]
+Output: 1
+Explanation:
+The first distinct maximum is 3.
+The second distinct maximum is 2.
+The third distinct maximum is 1.
+Example 2:
+
+Input: nums = [1,2]
+Output: 2
+Explanation:
+The first distinct maximum is 2.
+The second distinct maximum is 1.
+The third distinct maximum does not exist, so the maximum (2) is returned instead.
+Example 3:
+
+Input: nums = [2,2,3,1]
+Output: 1
+Explanation:
+The first distinct maximum is 3.
+The second distinct maximum is 2 (both 2's are counted together since they have the same value).
+The third distinct maximum is 1
+"""
+"""
+n=list(map(int,input("enter eleement: ").split()))
+s=set(n)
+n1=list(s)
+n1.sort()
+print(n1[-(len(s))])
+"""
+#question 16

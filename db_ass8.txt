@@ -1,0 +1,242 @@
+Assignment 1:
+
+ Employee Salary Analysis
+Use the following employees table to solve the questions below.
+
+NOTE:-use your friends names in the given table.
+Table: employees
+mysql> create table employee1(id int primary key auto_increment,name varchar(50),department varchar(30),job_role varchar(50),salary decimal(10,2),hire_date date);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc employee1;
++------------+---------------+------+-----+---------+----------------+
+| Field      | Type          | Null | Key | Default | Extra          |
++------------+---------------+------+-----+---------+----------------+
+| id         | int           | NO   | PRI | NULL    | auto_increment |
+| name       | varchar(50)   | YES  |     | NULL    |                |
+| department | varchar(30)   | YES  |     | NULL    |                |
+| job_role   | varchar(50)   | YES  |     | NULL    |                |
+| salary     | decimal(10,2) | YES  |     | NULL    |                |
+| hire_date  | date          | YES  |     | NULL    |                |
++------------+---------------+------+-----+---------+----------------+
+6 rows in set (0.01 sec)
+
+id name department job_role salary hire_date
+1 Alice HR       Manager       6000.00 2022-01-15
+2 Bob HR Recruiter 4000.00 2023-03-20
+3 Charlie IT Developer 5000.00 2022-07-25
+4 David IT Developer 5500.00 2021-12-05
+5 Eve IT Tester 4500.00 2023-06-10
+6 Frank IT Tester 4800.00 2023-09-12
+7 Grace Finance Analyst 5200.00 2021-11-18
+8 Hank Finance Analyst 5300.00 2022-04-30
+9 Ivy Finance Manager 7000.00 2023-08-14
+10 Jack HR Recruiter 4200.00 2022-10-05
+
+
+mysql> INSERT INTO employee1
+    -> (name, department, job_role, salary, hire_date)
+    -> VALUES
+    -> ('Mayank', 'HR', 'Manager', 6000.00, '2022-01-15'),
+    -> ('Aaradhya', 'HR', 'Recruiter', 4000.00, '2023-03-20'),
+    -> ('Deepak', 'IT', 'Developer', 5000.00, '2022-07-25'),
+    -> ('Kuldeep', 'IT', 'Developer', 5500.00, '2021-12-05'),
+    -> ('Dhruv', 'IT', 'Tester', 4500.00, '2023-06-10'),
+    -> ('Devendra', 'IT', 'Tester', 4800.00, '2023-09-12'),
+    -> ('Anirudha', 'Finance', 'Analyst', 5200.00, '2021-11-18'),
+    -> ('Aman', 'Finance', 'Analyst', 5300.00, '2022-04-30'),
+    -> ('Sumit', 'Finance', 'Manager', 7000.00, '2023-08-14'),
+    -> ('Rudra', 'HR', 'Recruiter', 4200.00, '2022-10-05');
+
+Questions
+Find the total number of employees in each department.
+
+mysql> select department,count(*) from employee1 group by department;
++------------+----------+
+| department | count(*) |
++------------+----------+
+| HR         |        3 |
+| IT         |        4 |
+| Finance    |        3 |
++------------+----------+
+
+Find the average salary of employees in each job role.
+
+mysql> select job_role,avg(salary) from employee1 group by job_role;
++-----------+-------------+
+| job_role  | avg(salary) |
++-----------+-------------+
+| Manager   | 6500.000000 |
+| Recruiter | 4100.000000 |
+| Developer | 5250.000000 |
+| Tester    | 4650.000000 |
+| Analyst   | 5250.000000 |
+
+
+Find the highest salary in the IT department.
+
+This is the best query for this question because the question only asks:
+
+mysql> select max(salary) as salary from employee1 where department="it";
++---------+
+| salary  |
++---------+
+| 5500.00 |
++---------+
+1 row in set (0.00 sec)
+
+
+
+
+mysql> select department,max(salary) as salary from employee1 where department="it" group by department;
++------------+---------+
+| department | salary  |
++------------+---------+
+| IT         | 5500.00 |
++------------+---------+
+
+
+
+
+
+
+Find the lowest salary among all employees.
+
+mysql> select min(salary) from employee1;
++-------------+
+| min(salary) |
++-------------+
+|     4000.00 |
++-------------+
+
+this is for find minimum salary of each deprtment-
+
+mysql> select department,min(salary) from employee1 group by department;
++------------+-------------+
+| department | min(salary) |
++------------+-------------+
+| HR         |     4000.00 |
+| IT         |     4500.00 |
+| Finance    |     5200.00 |
++------------+-------------+
+
+
+
+Count the number of employees who joined after January 1, 2023.
+
+mysql> select count(*) as employee from employee1 where hire_date>"2023-01-01";
++----------+
+| employee |
++----------+
+|        4 |
++----------+
+
+
+
+
+Find the total salary paid in each department.
+
+
+mysql> select department,sum(salary) as total_salary from employee1 group by department;
++------------+--------------+
+| department | total_salary |
++------------+--------------+
+| HR         |     14200.00 |
+| IT         |     19800.00 |
+| Finance    |     17500.00 |
++------------+--------------+
+
+
+
+
+
+Find the job role that has the highest total salary payout.
+
+mysql> select job_role,sum(salary) as maximum_salary from employee1 group by job_role;
++-----------+----------------+
+| job_role  | maximum_salary |
++-----------+----------------+
+| Manager   |       13000.00 |
+| Recruiter |        8200.00 |
+| Developer |       10500.00 |
+| Tester    |        9300.00 |
+| Analyst   |       10500.00 |
++-----------+----------------+
+5 rows in set (0.00 sec)
+
+this is correct for this quesry-
+
+mysql> select job_role,sum(salary) as maximum_salary from employee1 group by job_role order by maximum_salary desc limit 1;
++----------+----------------+
+| job_role | maximum_salary |
++----------+----------------+
+| Manager  |       13000.00 |
++----------+----------------+
+
+
+
+
+Find the average salary of employees who joined after 2022.
+
+mysql> select avg(salary) as average from employee1 where hire_date>"2022-01-01";
++-------------+
+| average     |
++-------------+
+| 5100.000000 |
++-------------+
+
+if we want employee toooo
+
+mysql> select count(*) as employee ,avg(salary) as average from employee1 where hire_date>"2022-01-01";
++----------+-------------+
+| employee | average     |
++----------+-------------+
+|        8 | 5100.000000 |
++----------+-------------+
+
+
+mysql> select avg(salary) as average from employee1 where hire_date>"2022-12-31";
++-------------+
+| average     |
++-------------+
+| 5075.000000 |
++-------------+
+
+
+Find departments where the total salary exceeds 10,000
+
+
+mysql> select department,sum(salary) from employee1 group by department having sum(salary)>10000;
++------------+-------------+
+| department | sum(salary) |
++------------+-------------+
+| HR         |    14200.00 |
+| IT         |    19800.00 |
+| Finance    |    17500.00 |
++------------+-------------+
+
+
+
+
+Find the department with the highest number of employees.
+
+
+mysql> select department,count(*) as highest_no from employee1 group by department  order by count(*) desc limit 1;
++------------+------------+
+| department | highest_no |
++------------+------------+
+| IT         |          4 |
++------------+------------+
+
+
+
+
+
+
+
+
+
+
+
+
+

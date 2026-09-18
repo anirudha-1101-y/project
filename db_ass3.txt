@@ -1,0 +1,665 @@
+# Assignment 3 — Employee Management System
+
+**Use the `employees` table and sample data given below.**
+
+## Table Structure
+
+Create an `employees` table with the following columns:
+
+* `employee_id`
+* `employee_name`
+* `department`
+* `city`
+* `salary`
+* `joining_date`
+* `experience`
+* `age`
+* `gender`
+* `employment_type`
+* `skills`
+* `email`
+* `manager_id`
+
+### Data Type Requirements
+
+Use:
+
+* `ENUM` for `gender`
+* `ENUM` for `employment_type`
+* `SET` for `skills`
+* `DATE` for `joining_date`
+* `DATE` for any other date column if required
+* Allow appropriate columns such as `email` and `manager_id` to contain `NULL`
+
+Insert **at least 10 employees** with different values.
+
+Your data must include:
+
+* At least SOME different departments
+* At least SOME different cities
+* Some employees with `NULL` email
+* Some employees with `NULL` manager_id
+* Different employment types such as `FULL_TIME`, `PART_TIME`, `CONTRACT`, `INTERN`
+* Different combinations of skills using `SET`
+* Employees who joined before 2022
+* Employees who joined between 2022 and 2024"
+* Employees who joined after 2024
+* Different salary ranges
+* Different experience levels
+* Both male and female employees
+
+mysql> create table employees(employee_id int primary key,employee_name varchar(50),department varchar(20),city varchar(50),salary decimal(10,2),joining_date date,experience int,age int,gender enum("male","female"),employment_type enum("full_time","part_time","contract","intern"),skills set("java","sql","python","react","spring","excel"),email varchar(100) null,manager_id int null);
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> desc employees;
++-----------------+-----------------------------------------------------+------+-----+---------+-------+
+| Field           | Type                                                | Null | Key | Default | Extra |
++-----------------+-----------------------------------------------------+------+-----+---------+-------+
+| employee_id     | int                                                 | NO   | PRI | NULL    |       |
+| employee_name   | varchar(50)                                         | YES  |     | NULL    |       |
+| department      | varchar(20)                                         | YES  |     | NULL    |       |
+| city            | varchar(50)                                         | YES  |     | NULL    |       |
+| salary          | decimal(10,2)                                       | YES  |     | NULL    |       |
+| joining_date    | date                                                | YES  |     | NULL    |       |
+| experience      | int                                                 | YES  |     | NULL    |       |
+| age             | int                                                 | YES  |     | NULL    |       |
+| gender          | enum('male','female')                               | YES  |     | NULL    |       |
+| employment_type | enum('full_time','part_time','contract','intern')   | YES  |     | NULL    |       |
+| skills          | set('java','sql','python','react','spring','excel') | YES  |     | NULL    |       |
+| email           | varchar(100)                                        | YES  |     | NULL    |       |
+| manager_id      | int                                                 | YES  |     | NULL    |       |
++-----------------+-----------------------------------------------------+------+-----+---------+-------+
+13 rows in set (0.01 sec)
+
+mysql> INSERT INTO employees
+    -> (employee_id, employee_name, department, city, salary, joining_date,
+    ->  experience, age, gender, employment_type, skills, email, manager_id)
+    -> VALUES
+    -> (101, 'Anirudha', 'IT', 'Indore', 65000, '2023-06-15',
+    ->  4, 24, 'MALE', 'FULL_TIME', 'JAVA,SQL,PYTHON', 'anirudha@gmail.com', 201),
+    ->
+    -> (102, 'Aman', 'Finance', 'Pune', 55000, '2022-08-20',
+    ->  5, 28, 'MALE', 'FULL_TIME', 'SQL,EXCEL', NULL, 202),
+    ->
+    -> (103, 'Sneha', 'IT', 'Delhi', 72000, '2024-02-10',
+    ->  3, 27, 'FEMALE', 'FULL_TIME', 'JAVA,PYTHON,REACT', 'sneha@gmail.com', 201),
+    ->
+    -> (104, 'Rahul', 'HR', 'Mumbai', 38000, '2021-05-12',
+    ->  6, 32, 'MALE', 'CONTRACT', 'SQL,EXCEL', NULL, NULL),
+    ->
+    -> (105, 'Aarti', 'Development', 'Indore', 85000, '2025-01-18',
+    ->  2, 26, 'FEMALE', 'FULL_TIME', 'JAVA,REACT,PYTHON', 'aarti@gmail.com', 203),
+    ->
+    -> (106, 'Sahil', 'Finance', 'Bhopal', 42000, '2023-09-05',
+    ->  3, 29, 'MALE', 'PART_TIME', 'SQL,PYTHON', 'sahil@gmail.com', NULL),
+    ->
+    -> (107, 'Meena', 'IT', 'Pune', 92000, '2020-11-25',
+    ->  8, 35, 'FEMALE', 'FULL_TIME', 'JAVA,SQL,SPRING', 'meena@gmail.com', 201),
+    ->
+    -> (108, 'Arjun', 'Marketing', 'Delhi', 48000, '2024-07-10',
+    ->  2, 25, 'MALE', 'INTERN', 'PYTHON,REACT', NULL, NULL),
+    ->
+    -> (109, 'Simran', 'Development', 'Indore', 58000, '2022-03-14',
+    ->  5, 31, 'FEMALE', 'CONTRACT', 'JAVA,SQL,REACT', 'simran@gmail.com', 203),
+    ->
+    -> (110, 'Mohit', 'HR', 'Bhopal', 35000, '2025-06-22',
+    ->  1, 23, 'MALE', 'INTERN', 'PYTHON', NULL, 204);
+Query OK, 10 rows affected (0.01 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from employees;
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+| employee_id | employee_name | department  | city   | salary   | joining_date | experience | age  | gender | employment_type | skills            | email              | manager_id |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+|         101 | Anirudha      | IT          | Indore | 65000.00 | 2023-06-15   |          4 |   24 | male   | full_time       | java,sql,python   | anirudha@gmail.com |        201 |
+|         102 | Aman          | Finance     | Pune   | 55000.00 | 2022-08-20   |          5 |   28 | male   | full_time       | sql,excel         | NULL               |        202 |
+|         103 | Sneha         | IT          | Delhi  | 72000.00 | 2024-02-10   |          3 |   27 | female | full_time       | java,python,react | sneha@gmail.com    |        201 |
+|         104 | Rahul         | HR          | Mumbai | 38000.00 | 2021-05-12   |          6 |   32 | male   | contract        | sql,excel         | NULL               |       NULL |
+|         105 | Aarti         | Development | Indore | 85000.00 | 2025-01-18   |          2 |   26 | female | full_time       | java,python,react | aarti@gmail.com    |        203 |
+|         106 | Sahil         | Finance     | Bhopal | 42000.00 | 2023-09-05   |          3 |   29 | male   | part_time       | sql,python        | sahil@gmail.com    |       NULL |
+|         107 | Meena         | IT          | Pune   | 92000.00 | 2020-11-25   |          8 |   35 | female | full_time       | java,sql,spring   | meena@gmail.com    |        201 |
+|         108 | Arjun         | Marketing   | Delhi  | 48000.00 | 2024-07-10   |          2 |   25 | male   | intern          | python,react      | NULL               |       NULL |
+|         109 | Simran        | Development | Indore | 58000.00 | 2022-03-14   |          5 |   31 | female | contract        | java,sql,react    | simran@gmail.com   |        203 |
+|         110 | Mohit         | HR          | Bhopal | 35000.00 | 2025-06-22   |          1 |   23 | male   | intern          | python            | NULL               |        204 |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+10 rows in set (0.00 sec)
+## Write SQL queries for the following questions:
+
+
+Find employees from IT, Finance, or HR who joined after '2023-01-01', have salary between ₹40,000 and ₹90,000, and have experience greater than 3 years.
+
+mysql>  select * from employees where department in ("it","finance","hr") and joining_date>"2023-01-01" and salary between 40000 and 90000 and experience>3;
++-------------+---------------+------------+--------+----------+--------------+------------+------+--------+-----------------+-----------------+--------------------+------------+
+| employee_id | employee_name | department | city   | salary   | joining_date | experience | age  | gender | employment_type | skills          | email              | manager_id |
++-------------+---------------+------------+--------+----------+--------------+------------+------+--------+-----------------+-----------------+--------------------+------------+
+|         101 | Anirudha      | IT         | Indore | 65000.00 | 2023-06-15   |          4 |   24 | male   | full_time       | java,sql,python | anirudha@gmail.com |        201 |
++-------------+---------------+------------+--------+----------+--------------+------------+------+--------+-----------------+-----------------+--------------------+------------+
+
+
+Find employees whose email is NULL, salary is greater than ₹50,000, and joining date is after '2022-01-01'.
+
+
+mysql>  select * from employees where email is null and salary >50000 and joining_date>"2022-01-01";
++-------------+---------------+------------+------+----------+--------------+------------+------+--------+-----------------+-----------+-------+------------+
+| employee_id | employee_name | department | city | salary   | joining_date | experience | age  | gender | employment_type | skills    | email | manager_id |
++-------------+---------------+------------+------+----------+--------------+------------+------+--------+-----------------+-----------+-------+------------+
+|         102 | Aman          | Finance    | Pune | 55000.00 | 2022-08-20   |          5 |   28 | male   | full_time       | sql,excel | NULL  |        202 |
++-------------+---------------+------------+------+----------+--------------+------------+------+--------+-----------------+-----------+-------+------------+
+
+
+
+
+
+
+
+Find employees whose manager_id is NOT NULL, department is not HR, and salary is either below ₹40,000 or above ₹80,000.
+
+
+mysql>  select * from employees where manager_id is not null and department<>"hr" and (salary<40000 or salary>80000);
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+-----------------+------------+
+| employee_id | employee_name | department  | city   | salary   | joining_date | experience | age  | gender | employment_type | skills            | email           | manager_id |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+-----------------+------------+
+|         105 | Aarti         | Development | Indore | 85000.00 | 2025-01-18   |          2 |   26 | female | full_time       | java,python,react | aarti@gmail.com |        203 |
+|         107 | Meena         | IT          | Pune   | 92000.00 | 2020-11-25   |          8 |   35 | female | full_time       | java,sql,spring   | meena@gmail.com |        201 |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+-----------------+------------+
+2 rows in set (0.00 sec)
+
+
+
+
+
+
+Find employees from Indore, Pune, or Delhi who joined between '2022-01-01' and '2025-12-31', have salary greater than ₹45,000, and experience of at least 3 years
+
+
+.mysql>  select * from employees where city in ("indore","pune","delhi") and joining_date between "2022-01-01" and "2025-12-31" and salary>45000 and experience>=3;
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+| employee_id | employee_name | department  | city   | salary   | joining_date | experience | age  | gender | employment_type | skills            | email              | manager_id |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+|         101 | Anirudha      | IT          | Indore | 65000.00 | 2023-06-15   |          4 |   24 | male   | full_time       | java,sql,python   | anirudha@gmail.com |        201 |
+|         102 | Aman          | Finance     | Pune   | 55000.00 | 2022-08-20   |          5 |   28 | male   | full_time       | sql,excel         | NULL               |        202 |
+|         103 | Sneha         | IT          | Delhi  | 72000.00 | 2024-02-10   |          3 |   27 | female | full_time       | java,python,react | sneha@gmail.com    |        201 |
+|         109 | Simran        | Development | Indore | 58000.00 | 2022-03-14   |          5 |   31 | female | contract        | java,sql,react    | simran@gmail.com   |        203 |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+
+
+Find employees who are FULL_TIME, have JAVA or PYTHON in their skills, salary greater than ₹50,000, and email is NOT NULL.
+
+mysql>  select * from employees where employment_type="full_time" and (find_in_set("java",skills) or find_in_set("python",skills)) and salary>50000 and email is not null;
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+| employee_id | employee_name | department  | city   | salary   | joining_date | experience | age  | gender | employment_type | skills            | email              | manager_id |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+|         101 | Anirudha      | IT          | Indore | 65000.00 | 2023-06-15   |          4 |   24 | male   | full_time       | java,sql,python   | anirudha@gmail.com |        201 |
+|         103 | Sneha         | IT          | Delhi  | 72000.00 | 2024-02-10   |          3 |   27 | female | full_time       | java,python,react | sneha@gmail.com    |        201 |
+|         105 | Aarti         | Development | Indore | 85000.00 | 2025-01-18   |          2 |   26 | female | full_time       | java,python,react | aarti@gmail.com    |        203 |
+|         107 | Meena         | IT          | Pune   | 92000.00 | 2020-11-25   |          8 |   35 | female | full_time       | java,sql,spring   | meena@gmail.com    |        201 |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+
+
+
+
+Find employees whose name starts with A or S, joining date is after '2023-01-01', salary is between ₹30,000 and ₹80,000, and age is between 25 and 35.
+
+mysql>  select * from employees where  (employee_name like "a%" or employee_name like "s%") and joining_date >"2023-01-01" and salary between 30000 and 80000 and age between 25 and 35;
++-------------+---------------+------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+-----------------+------------+
+| employee_id | employee_name | department | city   | salary   | joining_date | experience | age  | gender | employment_type | skills            | email           | manager_id |
++-------------+---------------+------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+-----------------+------------+
+|         103 | Sneha         | IT         | Delhi  | 72000.00 | 2024-02-10   |          3 |   27 | female | full_time       | java,python,react | sneha@gmail.com |        201 |
+|         106 | Sahil         | Finance    | Bhopal | 42000.00 | 2023-09-05   |          3 |   29 | male   | part_time       | sql,python        | sahil@gmail.com |       NULL |
+|         108 | Arjun         | Marketing  | Delhi  | 48000.00 | 2024-07-10   |          2 |   25 | male   | intern          | python,react      | NULL            |       NULL |
++-------------+---------------+------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+-----------------+------------+
+3 rows in set (0.00 sec)
+
+
+
+
+Find employees who belong to IT or Finance, have JAVA in skills, experience greater than 4 years, and salary is NOT between ₹50,000 and ₹80,000.
+
+
+mysql> select * from employees where department in ("it","finance") and skills="java" and experience>4 and salary not between 50000 and 80000;
+Empty set (0.00 sec)
+
+
+
+Find employees whose department is IT, HR, or Marketing, city is not Mumbai, salary is greater than ₹40,000, and either email is NULL or manager_id is NULL.
+
+mysql> select * from employees where department in ("it","finance") and city<>"mumbai" and salary>40000 and (email is null or manager_id is null);
++-------------+---------------+------------+--------+----------+--------------+------------+------+--------+---------------+--------------+---------------+------------+
+| employee_id | employee_name | department | city   | salary   | joining_date | experience | age  | gender | employee_type | skills       | email         | manager_id |
++-------------+---------------+------------+--------+----------+--------------+------------+------+--------+---------------+--------------+---------------+------------+
+|           1 | Anirudha      | IT         | Indore | 45000.00 | 2020-06-15   |          6 |   25 | male   | full_time     | python,mysql | ani@gmail.com |       NULL |
++-------------+---------------+------------+--------+----------+--------------+------------+------+--------+---------------+--------------+---------------+------------+
+
+
+
+
+
+
+
+Find employees who joined after '2022-01-01', are not INTERN, have salary greater than ₹45,000, and have either SQL or PYTHON in their skills.
+
+mysql> select * from employees where joining_date>"2022-01-01" and employee_type<>"intern" and salary>45000 and (find_in_set("sql",skills) or find_in_set("python",skills));
++-------------+---------------+------------+--------+----------+--------------+------------+------+--------+---------------+-------------------+-----------------+------------+
+| employee_id | employee_name | department | city   | salary   | joining_date | experience | age  | gender | employee_type | skills            | email           | manager_id |
++-------------+---------------+------------+--------+----------+--------------+------------+------+--------+---------------+-------------------+-----------------+------------+
+|           3 | Priya         | IT         | Indore | 55000.00 | 2022-08-10   |          4 |   26 | female | full_time     | python,mysql,java | priya@gmail.com |          1 |
+|           6 | Sneha         | IT         | Indore | 60000.00 | 2025-02-25   |          1 |   22 | female | full_time     | python,mysql,java | sneha@gmail.com |          3 |
+|           9 | Rohit         | IT         | Dewas  | 50000.00 | 2023-09-15   |          3 |   25 | male   | contract      | python,java       | rohit@gmail.com |          3 |
++-------------+---------------+------------+--------+----------+--------------+------------+------+--------+---------------+-------------------+-----------------+------------+
+3 rows in set (0.00 sec)
+
+
+
+
+
+
+Find employees whose salary is greater than ₹60,000 OR experience is greater than 7 years, but exclude employees from Mumbai and Bhopal.
+
+
+mysql>  select * from employees where (salary>60000 or experience>7) and city not in ("mumbai","bhopal");
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+| employee_id | employee_name | department  | city   | salary   | joining_date | experience | age  | gender | employment_type | skills            | email              | manager_id |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+|         101 | Anirudha      | IT          | Indore | 65000.00 | 2023-06-15   |          4 |   24 | male   | full_time       | java,sql,python   | anirudha@gmail.com |        201 |
+|         103 | Sneha         | IT          | Delhi  | 72000.00 | 2024-02-10   |          3 |   27 | female | full_time       | java,python,react | sneha@gmail.com    |        201 |
+|         105 | Aarti         | Development | Indore | 85000.00 | 2025-01-18   |          2 |   26 | female | full_time       | java,python,react | aarti@gmail.com    |        203 |
+|         107 | Meena         | IT          | Pune   | 92000.00 | 2020-11-25   |          8 |   35 | female | full_time       | java,sql,spring   | meena@gmail.com    |        201 |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+4 rows in set (0.00 sec)
+
+
+
+
+
+Find employees who joined between '2023-01-01' and '2026-12-31', belong to Electronics-related departments? Instead, use: departments IT or Development, salary greater than ₹50,000, and email is NOT NULL.
+
+
+mysql>  select * from employees where joining_date between "2023-01-01" and "2026-12-31" and department in ("it","development") and salary>50000 and email is not null;
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+| employee_id | employee_name | department  | city   | salary   | joining_date | experience | age  | gender | employment_type | skills            | email              | manager_id |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+|         101 | Anirudha      | IT          | Indore | 65000.00 | 2023-06-15   |          4 |   24 | male   | full_time       | java,sql,python   | anirudha@gmail.com |        201 |
+|         103 | Sneha         | IT          | Delhi  | 72000.00 | 2024-02-10   |          3 |   27 | female | full_time       | java,python,react | sneha@gmail.com    |        201 |
+|         105 | Aarti         | Development | Indore | 85000.00 | 2025-01-18   |          2 |   26 | female | full_time       | java,python,react | aarti@gmail.com    |        203 |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+
+
+
+
+
+
+
+
+
+
+
+Find employees whose name contains the letter a, department is not HR, salary is between ₹35,000 and ₹75,000, and joining date is after '2022-06-01'.
+
+mysql>  select * from employees where employee_name like "%a%" and department<>"hr" and salary between 35000 and 75000  and joining_date>"2022-06-01";
++-------------+---------------+------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+| employee_id | employee_name | department | city   | salary   | joining_date | experience | age  | gender | employment_type | skills            | email              | manager_id |
++-------------+---------------+------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+|         101 | Anirudha      | IT         | Indore | 65000.00 | 2023-06-15   |          4 |   24 | male   | full_time       | java,sql,python   | anirudha@gmail.com |        201 |
+|         102 | Aman          | Finance    | Pune   | 55000.00 | 2022-08-20   |          5 |   28 | male   | full_time       | sql,excel         | NULL               |        202 |
+|         103 | Sneha         | IT         | Delhi  | 72000.00 | 2024-02-10   |          3 |   27 | female | full_time       | java,python,react | sneha@gmail.com    |        201 |
+|         106 | Sahil         | Finance    | Bhopal | 42000.00 | 2023-09-05   |          3 |   29 | male   | part_time       | sql,python        | sahil@gmail.com    |       NULL |
+|         108 | Arjun         | Marketing  | Delhi  | 48000.00 | 2024-07-10   |          2 |   25 | male   | intern          | python,react      | NULL               |       NULL |
++-------------+---------------+------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+
+
+
+
+
+
+Find employees who have both JAVA and SQL skills, salary greater than ₹55,000, experience greater than 3 years, and manager_id is NOT NULL.
+
+mysql>  select * from employees where (find_in_set("java",skills) and find_in_set("sql",skills)) and salary>55000 and experience>3 and manager_id is not null;
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-----------------+--------------------+------------+
+| employee_id | employee_name | department  | city   | salary   | joining_date | experience | age  | gender | employment_type | skills          | email              | manager_id |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-----------------+--------------------+------------+
+|         101 | Anirudha      | IT          | Indore | 65000.00 | 2023-06-15   |          4 |   24 | male   | full_time       | java,sql,python | anirudha@gmail.com |        201 |
+|         107 | Meena         | IT          | Pune   | 92000.00 | 2020-11-25   |          8 |   35 | female | full_time       | java,sql,spring | meena@gmail.com    |        201 |
+|         109 | Simran        | Development | Indore | 58000.00 | 2022-03-14   |          5 |   31 | female | contract        | java,sql,react  | simran@gmail.com   |        203 |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-----------------+--------------------+------------+
+3 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+Find employees who have PYTHON or REACT skills, belong to IT or Development, joined after '2023-01-01', and salary is greater than ₹50,000.
+
+
+mysql>  select * from employees where (find_in_set("python",skills) or find_in_set("react",skills)) and department in ("it","development") and joining_date>"2023-01-01" and salary>50000;
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+| employee_id | employee_name | department  | city   | salary   | joining_date | experience | age  | gender | employment_type | skills            | email              | manager_id |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+|         101 | Anirudha      | IT          | Indore | 65000.00 | 2023-06-15   |          4 |   24 | male   | full_time       | java,sql,python   | anirudha@gmail.com |        201 |
+|         103 | Sneha         | IT          | Delhi  | 72000.00 | 2024-02-10   |          3 |   27 | female | full_time       | java,python,react | sneha@gmail.com    |        201 |
+|         105 | Aarti         | Development | Indore | 85000.00 | 2025-01-18   |          2 |   26 | female | full_time       | java,python,react | aarti@gmail.com    |        203 |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+3 rows in set (0.00 sec)
+
+
+
+
+
+
+Find employees whose employment type is CONTRACT or PART_TIME, salary is greater than ₹35,000, joining date is between '2022-01-01' and '2025-12-31', and email is NOT NULL.
+
+
+mysql>  select * from employees where employment_type in ("contract","part_time") and salary>35000 and joining_date between "2022-01-01" and "2025-12-31" and email is not null;
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+----------------+------------------+------------+
+| employee_id | employee_name | department  | city   | salary   | joining_date | experience | age  | gender | employment_type | skills         | email            | manager_id |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+----------------+------------------+------------+
+|         106 | Sahil         | Finance     | Bhopal | 42000.00 | 2023-09-05   |          3 |   29 | male   | part_time       | sql,python     | sahil@gmail.com  |       NULL |
+|         109 | Simran        | Development | Indore | 58000.00 | 2022-03-14   |          5 |   31 | female | contract        | java,sql,react | simran@gmail.com |        203 |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+-------
+
+
+
+
+
+Find employees whose gender is FEMALE, department is IT or Finance, salary is greater than ₹45,000, and experience is greater than 2 years.
+
+
+mysql>  select * from employees where gender="female" and department in ("it","finance") and salary>45000 and experience>2;
++-------------+---------------+------------+-------+----------+--------------+------------+------+--------+-----------------+-------------------+-----------------+------------+
+| employee_id | employee_name | department | city  | salary   | joining_date | experience | age  | gender | employment_type | skills            | email           | manager_id |
++-------------+---------------+------------+-------+----------+--------------+------------+------+--------+-----------------+-------------------+-----------------+------------+
+|         103 | Sneha         | IT         | Delhi | 72000.00 | 2024-02-10   |          3 |   27 | female | full_time       | java,python,react | sneha@gmail.com |        201 |
+|         107 | Meena         | IT         | Pune  | 92000.00 | 2020-11-25   |          8 |   35 | female | full_time       | java,sql,spring   | meena@gmail.com |        201 |
++-------------+---------------+------------+-------+----------+--------------+------------+------+--------+-----------------+-------------------+-----------------+------------+
+2 rows in set (0.00 sec)
+
+
+
+
+
+
+
+Find employees whose city is Indore, Pune, or Delhi, department is not HR, joining date is after '2023-01-01', salary is between ₹40,000 and ₹1,00,000, and manager_id is NOT NULL.
+
+
+mysql>  select * from employees where city in ("indore","pune","delhi") and department<>"hr" and joining_date >"2023-01-01" and salary between 40000 and 100000 and manager_id is not null;
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+| employee_id | employee_name | department  | city   | salary   | joining_date | experience | age  | gender | employment_type | skills            | email              | manager_id |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+|         101 | Anirudha      | IT          | Indore | 65000.00 | 2023-06-15   |          4 |   24 | male   | full_time       | java,sql,python   | anirudha@gmail.com |        201 |
+|         103 | Sneha         | IT          | Delhi  | 72000.00 | 2024-02-10   |          3 |   27 | female | full_time       | java,python,react | sneha@gmail.com    |        201 |
+|         105 | Aarti         | Development | Indore | 85000.00 | 2025-01-18   |          2 |   26 | female | full_time       | java,python,react | aarti@gmail.com    |        203 |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+
+
+
+
+
+
+
+
+
+
+
+Find employees whose salary is NOT between ₹30,000 and ₹60,000, experience is greater than 5 years, and either department is IT or Finance.
+
+
+
+
+ysql>  select * from employees where salary not between 30000 and 60000  and experience >5 and department in ("it","finance");
++-------------+---------------+------------+------+----------+--------------+------------+------+--------+-----------------+-----------------+-----------------+------------+
+| employee_id | employee_name | department | city | salary   | joining_date | experience | age  | gender | employment_type | skills          | email           | manager_id |
++-------------+---------------+------------+------+----------+--------------+------------+------+--------+-----------------+-----------------+-----------------+------------+
+|         107 | Meena         | IT         | Pune | 92000.00 | 2020-11-25   |          8 |   35 | female | full_time       | java,sql,spring | meena@gmail.com |        201 |
++-------------+---------------+------------+------+----------+--------------+------------+------+--------+-----------------+-----------------+-----------------+------------+
+1 row in set (0.01 sec)
+
+
+
+
+
+
+
+
+Find employees whose email is NULL OR manager_id is NULL, but salary must be greater than ₹40,000 and joining date must be after '2022-01-01'.
+
+mysql>  select * from employees where (email is null or manager_id is null ) and salary >40000 and joining_date>"2022-01-01";
++-------------+---------------+------------+--------+----------+--------------+------------+------+--------+-----------------+--------------+-----------------+------------+
+| employee_id | employee_name | department | city   | salary   | joining_date | experience | age  | gender | employment_type | skills       | email           | manager_id |
++-------------+---------------+------------+--------+----------+--------------+------------+------+--------+-----------------+--------------+-----------------+------------+
+|         102 | Aman          | Finance    | Pune   | 55000.00 | 2022-08-20   |          5 |   28 | male   | full_time       | sql,excel    | NULL            |        202 |
+|         106 | Sahil         | Finance    | Bhopal | 42000.00 | 2023-09-05   |          3 |   29 | male   | part_time       | sql,python   | sahil@gmail.com |       NULL |
+|         108 | Arjun         | Marketing  | Delhi  | 48000.00 | 2024-07-10   |          2 |   25 | male   | intern          | python,react | NULL            |       NULL |
++-------------+---------------+------------+--------+----------+--------------+------------+------+--------+-----
+
+
+
+
+
+
+
+
+
+Find employees whose name starts with S OR contains a, department is IT or Finance, salary is between ₹40,000 and ₹90,000, and experience is at least 3 years.
+
+
+mysql>  select * from employees where (employee_name like "s%" or employee_name like "%a%") and department in ("it","finance") and salary between 40000 and 90000 and experience>=3;
++-------------+---------------+------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+| employee_id | employee_name | department | city   | salary   | joining_date | experience | age  | gender | employment_type | skills            | email              | manager_id |
++-------------+---------------+------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+|         101 | Anirudha      | IT         | Indore | 65000.00 | 2023-06-15   |          4 |   24 | male   | full_time       | java,sql,python   | anirudha@gmail.com |        201 |
+|         102 | Aman          | Finance    | Pune   | 55000.00 | 2022-08-20   |          5 |   28 | male   | full_time       | sql,excel         | NULL               |        202 |
+|         103 | Sneha         | IT         | Delhi  | 72000.00 | 2024-02-10   |          3 |   27 | female | full_time       | java,python,react | sneha@gmail.com    |        201 |
+|         106 | Sahil         | Finance    | Bhopal | 42000.00 | 2023-09-05   |          3 |   29 | male   | part_time       | sql,python        | sahil@gmail.com    |       NULL |
++-------------+---------------+------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+
+
+
+
+
+Find employees who joined between '2022-01-01' and '2025-12-31', are not from Mumbai or Bhopal, salary is greater than ₹50,000, and have JAVA in their skills.
+
+
+mysql>  select * from employees where joining_date between "2022-01-01" and  "2025-12-31" and city not in ("mumbai","bhopal") and salary>50000 and find_in_set("java",skills);
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+| employee_id | employee_name | department  | city   | salary   | joining_date | experience | age  | gender | employment_type | skills            | email              | manager_id |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+|         101 | Anirudha      | IT          | Indore | 65000.00 | 2023-06-15   |          4 |   24 | male   | full_time       | java,sql,python   | anirudha@gmail.com |        201 |
+|         103 | Sneha         | IT          | Delhi  | 72000.00 | 2024-02-10   |          3 |   27 | female | full_time       | java,python,react | sneha@gmail.com    |        201 |
+|         105 | Aarti         | Development | Indore | 85000.00 | 2025-01-18   |          2 |   26 | female | full_time       | java,python,react | aarti@gmail.com    |        203 |
+|         109 | Simran        | Development | Indore | 58000.00 | 2022-03-14   |          5 |   31 | female | contract        | java,sql,react    | simran@gmail.com   |        203 |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+
+
+
+
+
+
+
+
+
+
+
+
+Find employees who are FULL_TIME, joined after '2023-01-01', have salary greater than ₹60,000, and have either JAVA + SQL or PYTHON + REACT skills.
+
+
+
+
+mysql> SELECT * FROM employees
+    -> WHERE employment_type = "full_time"
+    -> AND joining_date > "2023-01-01"
+    -> AND salary > 60000
+    -> AND (
+    ->     (FIND_IN_SET("java", skills) AND FIND_IN_SET("sql", skills))
+    ->     OR
+    ->     (FIND_IN_SET("python", skills) AND FIND_IN_SET("react", skills))
+    -> );
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+| employee_id | employee_name | department  | city   | salary   | joining_date | experience | age  | gender | employment_type | skills            | email              | manager_id |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+|         101 | Anirudha      | IT          | Indore | 65000.00 | 2023-06-15   |          4 |   24 | male   | full_time       | java,sql,python   | anirudha@gmail.com |        201 |
+|         103 | Sneha         | IT          | Delhi  | 72000.00 | 2024-02-10   |          3 |   27 | female | full_time       | java,python,react | sneha@gmail.com    |        201 |
+|         105 | Aarti         | Development | Indore | 85000.00 | 2025-01-18   |          2 |   26 | female | full_time       | java,python,react | aarti@gmail.com    |        203 |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+3 rows in set (0.00 sec)
+
+mysql>
+
+
+
+
+
+
+
+
+Find employees from IT, Finance, or Development whose salary is between ₹45,000 and ₹90,000, experience is greater than 3 years, email is NOT NULL, and manager_id is NOT NULL.
+
+
+
+mysql>  select * from employees where department in ("it","finance","development") and salary between 45000 and 90000 and experience>3 and (email is not null and manager_id is not null);
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-----------------+--------------------+------------+
+| employee_id | employee_name | department  | city   | salary   | joining_date | experience | age  | gender | employment_type | skills          | email              | manager_id |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-----------------+--------------------+------------+
+|         101 | Anirudha      | IT          | Indore | 65000.00 | 2023-06-15   |          4 |   24 | male   | full_time       | java,sql,python | anirudha@gmail.com |        201 |
+|         109 | Simran        | Development | Indore | 58000.00 | 2022-03-14   |          5 |   31 | female | contract        | java,sql,react  | simran@gmail.com   |        203 |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-----------------+--------------------+------------+
+2 rows in set (0.00 sec)
+
+
+
+
+
+Find employees whose joining date is after '2023-01-01', department is not HR, salary is greater than ₹50,000 OR experience is greater than 6 years, and city is not Mumbai.
+
+
+mysql>  select * from employees where joining_date >"2023-01-01" and department<>"hr" and (salary>50000 or experience>6) and city<>"mumbai";
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+| employee_id | employee_name | department  | city   | salary   | joining_date | experience | age  | gender | employment_type | skills            | email              | manager_id |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+|         101 | Anirudha      | IT          | Indore | 65000.00 | 2023-06-15   |          4 |   24 | male   | full_time       | java,sql,python   | anirudha@gmail.com |        201 |
+|         103 | Sneha         | IT          | Delhi  | 72000.00 | 2024-02-10   |          3 |   27 | female | full_time       | java,python,react | sneha@gmail.com    |        201 |
+|         105 | Aarti         | Development | Indore | 85000.00 | 2025-01-18   |          2 |   26 | female | full_time       | java,python,react | aarti@gmail.com    |        203 |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+3 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+Find employees whose name starts with A or M, gender is FEMALE, employment type is FULL_TIME, salary is greater than ₹45,000, and email is NOT NULL.
+
+
+
+mysql>  select * from employees where (employee_name like "a%" or employee_name like "m%" ) and gender="female" and employment_type="full_time" and salary>45000 and email is not null;
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+-----------------+------------+
+| employee_id | employee_name | department  | city   | salary   | joining_date | experience | age  | gender | employment_type | skills            | email           | manager_id |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+-----------------+------------+
+|         105 | Aarti         | Development | Indore | 85000.00 | 2025-01-18   |          2 |   26 | female | full_time       | java,python,react | aarti@gmail.com |        203 |
+|         107 | Meena         | IT          | Pune   | 92000.00 | 2020-11-25   |          8 |   35 | female | full_time       | java,sql,spring   | meena@gmail.com |        201 |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+-----------------+------------+
+2 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+
+Find employees who have JAVA or SPRING use in their skills, joined after '2022-01-01', salary is NOT between ₹40,000 and ₹70,000, and manager_id is NOT NULL.
+
+
+
+mysql>  select * from employees where (find_in_set("java",skills) or find_in_set("spring",skills) )and joining_date>"2022-01-01" and salary not between 40000 and 70000 and manager_id is not null;
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+-----------------+------------+
+| employee_id | employee_name | department  | city   | salary   | joining_date | experience | age  | gender | employment_type | skills            | email           | manager_id |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+-----------------+------------+
+|         103 | Sneha         | IT          | Delhi  | 72000.00 | 2024-02-10   |          3 |   27 | female | full_time       | java,python,react | sneha@gmail.com |        201 |
+|         105 | Aarti         | Development | Indore | 85000.00 | 2025-01-18   |          2 |   26 | female | full_time       | java,python,react | aarti@gmail.com |        203 |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+-----------------+------------+
+2 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+Find employees from Indore, Pune, or Delhi whose joining date is between '2023-01-01' and '2026-12-31', salary is between ₹40,000 and ₹1,00,000, experience is greater than 2 years, and either email or manager_id is NULL.
+
+mysql>  select * from employees where city in ("indore","pune","delhi") and joining_date between "2023-01-01" and "2026-12-31" and salary between 40000 and 100000 and experience>2 and (email is null or manager_id is null);
+Empty set (0.00 sec)
+
+
+
+Find employees belonging to IT or Development, whose name contains a, skills contain JAVA or PYTHON, salary is greater than ₹50,000, joining date is after '2023-01-01', and email is NOT NULL.
+
+
+mysql>  select * from employees where department in ("it","development") and employee_name like "%a%" and (find_in_set("java",skills) or find_in_set("python",skills)) and salary>50000 and joining_date >"2023-01-01" and email is not null;
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+| employee_id | employee_name | department  | city   | salary   | joining_date | experience | age  | gender | employment_type | skills            | email              | manager_id |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+|         101 | Anirudha      | IT          | Indore | 65000.00 | 2023-06-15   |          4 |   24 | male   | full_time       | java,sql,python   | anirudha@gmail.com |        201 |
+|         103 | Sneha         | IT          | Delhi  | 72000.00 | 2024-02-10   |          3 |   27 | female | full_time       | java,python,react | sneha@gmail.com    |        201 |
+|         105 | Aarti         | Development | Indore | 85000.00 | 2025-01-18   |          2 |   26 | female | full_time       | java,python,react | aarti@gmail.com    |        203 |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+3 rows in set (0.00 sec)
+
+
+
+
+
+
+
+Find employees whose department is IT, Finance, or Development, city is not Mumbai or Bhopal, salary is between ₹40,000 and ₹90,000, experience is greater than 3 years, skills contain SQL, and manager_id is NOT NULL. Display the result ordered by salary in descending order.
+
+
+
+mysql>  select * from employees where department in ("it","development","finance") and city not in ("mumbai","bhopal") and salary between 40000 and 90000 and experience>3 and find_in_set("sql",skills) and manager_id is not null  order by salary desc;
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-----------------+--------------------+------------+
+| employee_id | employee_name | department  | city   | salary   | joining_date | experience | age  | gender | employment_type | skills          | email              | manager_id |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-----------------+--------------------+------------+
+|         101 | Anirudha      | IT          | Indore | 65000.00 | 2023-06-15   |          4 |   24 | male   | full_time       | java,sql,python | anirudha@gmail.com |        201 |
+|         109 | Simran        | Development | Indore | 58000.00 | 2022-03-14   |          5 |   31 | female | contract        | java,sql,react  | simran@gmail.com   |        203 |
+|         102 | Aman          | Finance     | Pune   | 55000.00 | 2022-08-20   |          5 |   28 | male   | full_time       | sql,excel       | NULL               |        202 |
++-------------+---------------+-------------+--------+----------+--------------+------------+------+--------+-----------------+-----------------+--------------------+------------+
+3 rows in set (0.00 sec)
+
+
+Find employees whose name starts with S OR contains a, department is IT or Finance, joining date is between '2023-01-01' and '2026-12-31', salary is between ₹40,000 and ₹1,00,000, experience is greater than 2 years, email is NOT NULL, manager_id is NOT NULL, skills contain JAVA or PYTHON, and city is Indore, Pune, or Delhi. Display the result first by department ascending and then by salary descending.ue
+
+
+
+
+mysql>  select * from employees where (employee_name like "s%" or employee_name like "%a%" ) and department in ("it","finance") and joining_date between "2023-01-01" and "2026-12-31" and salary between 40000 and 100000 and experience>2 and email is not null and manager_id is not null and (find_in_set("java",skills) or find_in_set("python",skills)) and city in ("indore","pune","delhi") order by department,salary desc;
++-------------+---------------+------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+| employee_id | employee_name | department | city   | salary   | joining_date | experience | age  | gender | employment_type | skills            | email              | manager_id |
++-------------+---------------+------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+|         103 | Sneha         | IT         | Delhi  | 72000.00 | 2024-02-10   |          3 |   27 | female | full_time       | java,python,react | sneha@gmail.com    |        201 |
+|         101 | Anirudha      | IT         | Indore | 65000.00 | 2023-06-15   |          4 |   24 | male   | full_time       | java,sql,python   | anirudha@gmail.com |        201 |
++-------------+---------------+------------+--------+----------+--------------+------------+------+--------+-----------------+-------------------+--------------------+------------+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
